@@ -83,7 +83,7 @@ if [[ -f /config/custom-config.js ]]; then
     cat /config/custom-config.js >> /config/config.js
 fi
 
-MissedAppName="${$CUSTOM_APP_NAME:-Missed.com}"
+MissedAppName="${CUSTOM_APP_NAME:=Missed.com}"
 
 if [[ ! -f /config/interface_config.js ]]; then
     cp /defaults/interface_config.js /config/interface_config.js
