@@ -1,16 +1,10 @@
 #!/usr/bin/with-contenv bash
 
 MISSED_APP_NAME="${CUSTOM_APP_NAME:=Missed.com}"
-<<<<<<< HEAD
 MISSED_APP_BG="${CUSTOM_APP_BACKGROUND:=474747}"
 MISSED_WATERMARK_URL="${CUSTOM_WATERMARK_URL:=https://missed.com}"
 MISSED_ENABLE_WELCOME_PAGE="${CUSTOM_ENABLE_WELCOME_PAGE:=true}"
-MISSED_DISABLE_SCREEN_SHARING="${CUSTOM_DISABLE_SCREEN_SHARING:=false}"
-=======
 MISSED_APP_BG="${CUSTOM_APP_BACKGROUND:=#474747}"
-MISSED_WATERMARK_URL="${CUSTOM_WATERMARK_URL:=https://missed.com}"
-MISSED_ENABLE_WELCOME_PAGE="${CUSTOM_ENABLE_WELCOME_PAGE:=true}"
->>>>>>> f6418c3... Third try
 
 # make our folders
 mkdir -p \
@@ -108,7 +102,6 @@ fi
             /config/config.js
     fi
 
-<<<<<<< HEAD
     sed -i \
         -e "s#// resolution:.*#resolution: 480,#" \
         /config/config.js
@@ -122,13 +115,6 @@ fi
         /config/config.js
 
 fi
-=======
-    if [[ $ENABLE_TRANSCRIPTIONS -eq 1 || "$ENABLE_TRANSCRIPTIONS" == "true" ]]; then
-        sed -i \
-             -e "s#// transcribingEnabled:.*#transcribingEnabled: true,#" \
-             /config/config.js
-    fi
->>>>>>> f6418c3... Third try
 
     if [[ $MISSED_ENABLE_WELCOME_PAGE -ne 1 || "$MISSED_ENABLE_WELCOME_PAGE" != "true" ]]; then
         sed -i \
