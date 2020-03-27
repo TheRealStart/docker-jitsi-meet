@@ -19,7 +19,7 @@ RUN \
 	rm -f /usr/share/jitsi-meet/favicon.ico && \
 	rm -f /usr/share/jitsi-meet/images/favicon.ico && \
 	rm -f /usr/share/jitsi-meet/images/watermark.png && \
-	rm -f /usr/share/jitsi-meet/images/logo-deep-linking.png &&
+	rm -f /usr/share/jitsi-meet/images/logo-deep-linking.png
 
 EXPOSE 80 443
 
