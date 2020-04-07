@@ -13,7 +13,7 @@ RUN \
 	mv /usr/share/jitsi-meet/interface_config.js /defaults && \
 	rm -f /etc/nginx/conf.d/default.conf && \
 	apt-cleanup && \
-	rm -rf /tmp/pkg /var/cache/apt
+	rm -rf /tmp/pkg /var/cache/apt && \
 	# Customizations
 	rm -f /usr/share/jitsi-meet/title.html && \
 	rm -f /usr/share/jitsi-meet/favicon.ico && \
