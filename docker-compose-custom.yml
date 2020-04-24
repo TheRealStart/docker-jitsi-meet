@@ -13,6 +13,13 @@ services:
             - ${CONFIG}/web/letsencrypt:/etc/letsencrypt:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
         environment:
+            - CUSTOM_APP_NAME
+            - CUSTOM_APP_BACKGROUND
+            - CUSTOM_WATERMARK_URL
+            - CUSTOM_ENABLE_WELCOME_PAGE
+            - CUSTOM_DISABLE_SCREEN_SHARING
+            - ENABLE_AUTH
+            - ENABLE_GUESTS
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
             - DISABLE_HTTPS
@@ -200,7 +207,7 @@ services:
         restart: ${RESTART_POLICY}
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'
-            - '${JVB_TCP_PORT}:${JVB_TCP_PORT}'
+            - '${JVB_TCP_MAPPED_PORT}:${JVB_TCP_PORT}'
         volumes:
             - ${CONFIG}/jvb:/config:Z
         environment:
