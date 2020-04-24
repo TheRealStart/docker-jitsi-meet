@@ -4,7 +4,7 @@ MISSED_APP_NAME="${CUSTOM_APP_NAME:=Missed.com}"
 MISSED_APP_BG="${CUSTOM_APP_BACKGROUND:=474747}"
 MISSED_WATERMARK_URL="${CUSTOM_WATERMARK_URL:=https://missed.com}"
 MISSED_ENABLE_WELCOME_PAGE="${CUSTOM_ENABLE_WELCOME_PAGE:=true}"
-MISSED_APP_BG="${CUSTOM_APP_BACKGROUND:=#474747}"
+MISSED_DISABLE_SCREEN_SHARING="${CUSTOM_DISABLE_SCREEN_SHARING:=false}"
 
 # make our folders
 mkdir -p \
@@ -112,8 +112,14 @@ fi
             /config/config.js
     fi
 
+    if [[ $MISSED_DISABLE_SCREEN_SHARING -eq 1 || "$MISSED_DISABLE_SCREEN_SHARING" == "true" ]]; then
+        sed -i \
+            -e "s#// desktopSharingChromeDisabled:.*#desktopSharingChromeDisabled: true,#" \
+            -e "s#// desktopSharingFirefoxDisabled:.*#desktopSharingFirefoxDisabled: true,#" \
+            /config/config.js
+    fi
+
     sed -i \
-        -e "s#// disableAudioLevels:.*#disableAudioLevels: true,#" \
         -e "s#// resolution:.*#resolution: 480,#" \
         /config/config.js
 
