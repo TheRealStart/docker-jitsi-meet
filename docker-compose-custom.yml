@@ -103,7 +103,8 @@ services:
 
     # XMPP server
     prosody:
-        image: jitsi/prosody
+        image: jitsi/prosody:stable-4548-1
+        restart: ${RESTART_POLICY}
         # Exposing to world for other jvb instances
         ports:
             - 5222:5222
