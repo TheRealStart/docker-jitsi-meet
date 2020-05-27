@@ -13,13 +13,7 @@ RUN \
 	mv /usr/share/jitsi-meet/interface_config.js /defaults && \
 	rm -f /etc/nginx/conf.d/default.conf && \
 	apt-cleanup && \
-	rm -rf /tmp/pkg /var/cache/apt && \
-	# Customizations
-	rm -f /usr/share/jitsi-meet/title.html && \
-	rm -f /usr/share/jitsi-meet/favicon.ico && \
-	rm -f /usr/share/jitsi-meet/images/favicon.ico && \
-	rm -f /usr/share/jitsi-meet/images/watermark.png && \
-	rm -f /usr/share/jitsi-meet/images/logo-deep-linking.png
+	rm -rf /tmp/pkg /var/cache/apt
 
 EXPOSE 80 443
 
