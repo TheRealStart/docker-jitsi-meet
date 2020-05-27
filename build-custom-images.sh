@@ -38,7 +38,7 @@ if [ -f $envFile ]; then
   make
   make source-package
   cd ..
-  tar -xzf trs-jitsi-meet/jitsi-meet.tar.bz2
+  tar xf trs-jitsi-meet/jitsi-meet.tar.bz2
   docker build --tag jitsi/web:custom .
   cd ..
 
