@@ -38,7 +38,7 @@ if [ -f $envFile ]; then
   make
   make source-package
   cd ..
-  tar xf trs-jitsi-meet/jitsi-meet.tar.bz2
+  tar -xzf trs-jitsi-meet/jitsi-meet.tar.bz2
   docker build --tag jitsi/web:custom .
   cd ..
 
@@ -58,7 +58,7 @@ if [ -f $envFile ]; then
   fi
   mvn package -DskipTests -Dassembly.skipAssembly=false
   cd ..
-  unzip -o trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip
+  unzip trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip
   # compiled files are located under folder: trs-jicofo/jicofo-1.1-SNAPSHOT
   echo "Building custom jicofo"
   docker build --tag jitsi/jicofo:custom .
