@@ -58,7 +58,7 @@ if [ -f $envFile ]; then
   fi
   mvn package -DskipTests -Dassembly.skipAssembly=false
   cd ..
-  unzip trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip
+  unzip -o trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip
   # compiled files are located under folder: trs-jicofo/jicofo-1.1-SNAPSHOT
   echo "Building custom jicofo"
   docker build --tag jitsi/jicofo:custom .
