@@ -133,6 +133,14 @@ fi
         -e "s#// resolution:.*#resolution: 480,#" \
         /config/config.js
 
+    sed -i \
+        "s/stun:meet-jit-si-turnrelay.jitsi.net:443/${JITSI_WEB_STUN_SERVER}/g" \
+        /config/config.js
+
+    sed -i \
+        "/s/enabled: true/enabled: false/g" \
+        /config/config.js
+
 fi
 
 if [[ ! -f /config/interface_config.js ]]; then
