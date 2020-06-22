@@ -139,7 +139,7 @@ if [[ ! -f /config/config.js ]]; then
         /config/config.js
 
     sed -i \
-        "s/stun:meet-jit-si-turnrelay.jitsi.net:443/${JITSI_WEB_STUN_SERVER}/g" \
+        "s/stun:meet-jit-si-turnrelay.jitsi.net:443/${JVB_STUN_SERVERS}/g" \
         /config/config.js
 
     sed -i \
