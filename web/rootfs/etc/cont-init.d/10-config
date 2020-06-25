@@ -107,7 +107,7 @@ fi
         /config/config.js
 
     sed -i \
-        "s/stun:meet-jit-si-turnrelay.jitsi.net:443/${JVB_STUN_SERVERS}/g" \
+        "s/stun:meet-jit-si-turnrelay.jitsi.net:443/${JVB_STUN_SERVERS}/1" \
         /config/config.js
 
     sed -i \
