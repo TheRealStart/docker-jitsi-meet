@@ -101,7 +101,7 @@ fi
         /config/config.js
 
     sed -i \
-        "/s/enabled: true/enabled: false/g" \
+        "/s/enabled: true/enabled: false/1" \
         /config/config.js
 
 fi
