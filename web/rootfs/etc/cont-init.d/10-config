@@ -133,11 +133,11 @@ if [[ ! -f /config/config.js ]]; then
         /config/config.js
 
     sed -i \
-        "s/stun:meet-jit-si-turnrelay.jitsi.net:443/${JITSI_WEB_STUN_SERVER}/g" \
+        "s/stun:meet-jit-si-turnrelay.jitsi.net:443/${JVB_STUN_SERVERS}/1" \
         /config/config.js
 
     sed -i \
-        "/s/enabled: true/enabled: false/g" \
+        "/s/enabled: true/enabled: false/1" \
         /config/config.js
 
 fi
