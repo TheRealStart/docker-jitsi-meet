@@ -51,7 +51,7 @@ services:
 
     # XMPP server
     prosody:
-        image: jitsi/prosody:stable-4548-1
+        image: jitsi/prosody:stable-4627-1
         restart: ${RESTART_POLICY}
         # Exposing to world for other jvb instances
         ports:
@@ -149,7 +149,7 @@ services:
 
     # Video bridge
     # jvb:
-    #     image: jitsi/jvb:stable-4548-1
+    #     image: jitsi/jvb:stable-4627-1
     #     restart: ${RESTART_POLICY}
     #     ports:
     #         - '${JVB_PORT}:${JVB_PORT}/udp'
@@ -173,7 +173,7 @@ services:
     #     depends_on:
     #         - prosody
     #     networks:
-    #         meet.jitsi: 
+    #         meet.jitsi:
 
 # Custom network so all services can communicate using a FQDN
 networks:
