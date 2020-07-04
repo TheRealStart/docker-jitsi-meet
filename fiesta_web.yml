@@ -46,3 +46,6 @@ services:
             meet.jitsi:
                 aliases:
                     - ${XMPP_DOMAIN}
+
+networks:
+    meet.jitsi:
