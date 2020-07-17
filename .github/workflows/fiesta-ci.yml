@@ -13,10 +13,13 @@ jobs:
       - uses: actions/checkout@v2
   
       - name: Deploy to the main host
-        env: 
-          MAIN_SERVER: ${{ secrets.MAIN_SERVER }}
-        run: |
-          ssh ubuntu@$MAIN_SERVER 'echo test >> test'
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            echo test >> test
+          host: ${{ secrets.FIESTA_MEET_MAIN_SERVER }}
+          user: ubuntu
+          key: ${{ secrets.FIESTA_MEET_MAIN_SERVER }}
 
       - name: Run a multi-line script
         run: |
