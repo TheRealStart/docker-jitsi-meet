@@ -14,9 +14,13 @@ jobs:
   
       - name: Deploy to the main host
         uses: fifsky/ssh-action@master
+        env:
+          PROJECT_DIR: ${{ secrets.FIESTA_MAIN_PROJECT_LOCATION }}
         with:
           command: |
-            echo test >> test
+            cd $PROJECT_DIR
+            git pull origin ${GITHUB_REF##*/}
+            exec $PROJECT_DIR/build-custom-images.sh
           host: ${{ secrets.FIESTA_MEET_MAIN_SERVER }}
           user: ubuntu
           key: ${{ secrets.FIESTA_PRIVKEY }}
