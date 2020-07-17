@@ -19,7 +19,7 @@ jobs:
             echo test >> test
           host: ${{ secrets.FIESTA_MEET_MAIN_SERVER }}
           user: ubuntu
-          key: ${{ secrets.FIESTA_MEET_MAIN_SERVER }}
+          key: ${{ secrets.FIESTA_PRIVKEY }}
 
       - name: Run a multi-line script
         run: |
