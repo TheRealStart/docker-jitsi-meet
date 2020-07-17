@@ -7,18 +7,16 @@ on:
     branches: [ fiesta ]
 
 jobs:
-    build:
+    deploy:
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v2
   
       - name: Deploy to the main host
         env: 
-          FIESTA_PEM_FILE: ${{ secrets.FIESTA_PEM_FILE }}
           MAIN_SERVER: ${{ secrets.MAIN_SERVER }}
         run: |
-          echo $FIESTA_PEM_FILE >> fiesta.pem
-          ssh -i fiesta.pem ubuntu@$MAIN_SERVER 'echo test >> test'
+          ssh ubuntu@$MAIN_SERVER 'echo test >> test'
 
       - name: Run a multi-line script
         run: |
