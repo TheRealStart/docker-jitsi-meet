@@ -15,12 +15,10 @@ jobs:
       - name: Deploy to the main host
         env: 
           FIESTA_PEM_FILE: ${{ secrets.FIESTA_PEM_FILE }}
+          MAIN_SERVER: ${{ secrets.MAIN_SERVER }}
         run: |
-          ls .
           echo $FIESTA_PEM_FILE >> fiesta.pem
-          cat fiesta.pem
-          rm -rf fiesta.pem
-
+          ssh -i fiesta.pem ubuntu@$MAIN_SERVER 'echo test >> test'
 
       - name: Run a multi-line script
         run: |
