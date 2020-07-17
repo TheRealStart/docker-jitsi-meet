@@ -50,9 +50,13 @@ if [ -f $envFile ]; then
   cd trs-jicofo
   if [ ! -d .git ]; then
     git clone github-trs-jicofo:TheRealStart/jicofo.git .
+    git add .
+    git commit -m "commiting changes if needed"
     git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
   else
     git fetch
+    git add .
+    git commit -m "commiting changes if needed"
     git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
     git pull
   fi
