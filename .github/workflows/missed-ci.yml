@@ -1,0 +1,134 @@
+name: Missed_CI
+
+on:
+  push:
+    branches: [ missed ]
+
+jobs:
+    deploy:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+
+      - name: Notify slack channel about deploy started
+        uses: sonots/slack-notice-action@v3
+        with:
+          title: Deploy started (Missed.com)
+          text: Deploying jitsi services for missed.com has started
+          status: ${{ job.status }}
+          username: docker-missed-meet
+          icon_emoji: ':octocat:'
+          channel: '#wtp-git-stream'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
+        
+      - name: Deploy to the main host
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            cd ${{ secrets.MISSED_MAIN_PROJECT_LOCATION }}
+            git pull origin ${GITHUB_REF##*/}
+            exec ${{ secrets.MISSED_MAIN_PROJECT_LOCATION }}/build-custom-images.sh
+            docker-compose -f docker-compose-custom -f jigasi-custom.yml up -d
+            docker tag jitsi/web:custom ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
+            docker login ${{ secrets.DOCKER_REGISTRY }}
+            docker push ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
+          host: ${{ secrets.MISSED_MEET_MAIN_SERVER }}
+          user: ubuntu
+          key: ${{ secrets.MISSED_PRIVKEY }}
+      
+      - name: Deploy to us-east-1
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            docker login ${{ secrets.DOCKER_REGISTRY }}
+            docker pull ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
+            docker stop ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+            docker rm ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+            set -a &&. ./.env && set +a
+            docker run --detach --volume $CONFIG/web:/config:Z --volume $CONFIG/web/letsencrypt:/etc/letsencrypt:Z --publish $HTTP_PORT:80 --name $JITSI_WEB_CONTAINER_NAME $JITSI_WEB_IMAGE_NAME
+          host: ${{ secrets.MISSED_MEET_US_WEST_1 }}
+          user: ubuntu
+          key: ${{ secrets.MISSED_PRIVKEY }}
+
+      - uses: sonots/slack-notice-action@v3
+        with:
+            title: Deploy to N. Virginia (us-east-1)
+            status: ${{ job.status }}
+            username: docker-missed-meet
+            icon_emoji: ':octocat:'
+            channel: '#wtp-git-stream'
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
+
+      - name: Deploy to eu-central-1
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            docker login ${{ secrets.DOCKER_REGISTRY }}
+            docker pull ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
+            docker stop ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+            docker rm ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+            set -a &&. ./.env && set +a
+            docker run --detach --volume $CONFIG/web:/config:Z --volume $CONFIG/web/letsencrypt:/etc/letsencrypt:Z --publish $HTTP_PORT:80 --name $JITSI_WEB_CONTAINER_NAME $JITSI_WEB_IMAGE_NAME
+          host: ${{ secrets.MISSED_MEET_EU_CENTRAL_1 }}
+          user: ubuntu
+          key: ${{ secrets.MISSED_PRIVKEY }}
+
+      - uses: sonots/slack-notice-action@v3
+        with:
+          title: Deploy to Frankfurt (eu-central-1)
+          status: ${{ job.status }}
+          username: docker-missed-meet
+          icon_emoji: ':octocat:'
+          channel: '#wtp-git-stream'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
+      
+      - name: Deploy to ap-south-1
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            docker login ${{ secrets.DOCKER_REGISTRY }}
+            docker pull ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
+            docker stop ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+            docker rm ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+            set -a &&. ./.env && set +a
+            docker run --detach --volume $CONFIG/web:/config:Z --volume $CONFIG/web/letsencrypt:/etc/letsencrypt:Z --publish $HTTP_PORT:80 --name $JITSI_WEB_CONTAINER_NAME $JITSI_WEB_IMAGE_NAME
+          host: ${{ secrets.MISSED_MEET_AP_SOUTH_1 }}
+          user: ubuntu
+          key: ${{ secrets.MISSED_PRIVKEY }}
+
+      - uses: sonots/slack-notice-action@v3
+        with:
+          title: Deploy to Mumbai (ap-south-1)
+          status: ${{ job.status }}
+          username: docker-missed-meet
+          icon_emoji: ':octocat:'
+          channel: '#wtp-git-stream'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
+
+      - name: Notify slack channel about deploy finished
+        uses: sonots/slack-notice-action@v3
+        with:
+          title: Deploy finished
+          text: Deploying jitsi services for missed has finished
+          status: ${{ job.status }}
+          username: docker-missed-meet
+          icon_emoji: ':octocat:'
+          channel: '#wtp-git-stream'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
+        
+          
