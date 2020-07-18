@@ -15,13 +15,12 @@ jobs:
       # deploy to the main host with git
       - name: Deploy to the main host
         uses: fifsky/ssh-action@master
-        env:
-          PROJECT_DIR: ${{ secrets.FIESTA_MAIN_PROJECT_LOCATION }}
         with:
           command: |
             cd ${{ secrets.FIESTA_MAIN_PROJECT_LOCATION }}
             git pull origin ${GITHUB_REF##*/}
-            exec ${{ secrets.FIESTA_MAIN_PROJECT_LOCATION }}
+            exec ${{ secrets.FIESTA_MAIN_PROJECT_LOCATION }}/build-custom-images.sh
+            docker-compose -f docker-compose-custom up -d
           host: ${{ secrets.FIESTA_MEET_MAIN_SERVER }}
           user: ubuntu
           key: ${{ secrets.FIESTA_PRIVKEY }}
