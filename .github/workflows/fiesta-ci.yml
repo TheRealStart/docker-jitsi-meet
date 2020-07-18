@@ -27,7 +27,8 @@ jobs:
           host: ${{ secrets.FIESTA_MEET_MAIN_SERVER }}
           user: ubuntu
           key: ${{ secrets.FIESTA_PRIVKEY }}
-
+      
+      # deploy to other servers with docker
       - name: Deploy to us-west-1
         uses: fifsky/ssh-action@master
         with:
