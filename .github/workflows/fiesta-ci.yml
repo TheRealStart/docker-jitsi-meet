@@ -11,6 +11,17 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v2
+
+      - uses: sonots/slack-notice-action@v3
+        with:
+          status: ${{ job.status }}
+          username: docker-fiesta-meet
+          icon_emoji: ':octocat:'
+          channel: '#wtp-git-stream'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required, but GitHub should automatically supply
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: always() # Pick up events even if the job fails or is canceled.
   
       # deploy to the main host with git
       - name: Deploy to the main host
