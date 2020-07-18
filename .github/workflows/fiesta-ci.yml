@@ -14,8 +14,8 @@ jobs:
   
       # deploy to the main host with git
       - name: Deploy to the main host
-        - uses: fifsky/ssh-action@master
-        - uses: sonots/slack-notice-action@v3
+        uses: fifsky/ssh-action@master
+        uses: sonots/slack-notice-action@v3
             with:
               title: Deploy to the main server
               status: ${{ job.status }}
@@ -41,8 +41,8 @@ jobs:
       
       # deploy to other servers with docker
       - name: Deploy to us-west-1
-        - uses: fifsky/ssh-action@master
-        - uses: sonots/slack-notice-action@v3
+        uses: fifsky/ssh-action@master
+        uses: sonots/slack-notice-action@v3
             with:
               title: Deploy to California (us-west-1)
               status: ${{ job.status }}
@@ -66,8 +66,8 @@ jobs:
           key: ${{ secrets.FIESTA_PRIVKEY }}
 
       - name: Deploy to sa-east-1
-        - uses: fifsky/ssh-action@master
-        - uses: sonots/slack-notice-action@v3
+        uses: fifsky/ssh-action@master
+        uses: sonots/slack-notice-action@v3
             with:
               title: Deploy to Sao Paulo (sa-east-1)
               status: ${{ job.status }}
@@ -91,8 +91,8 @@ jobs:
           key: ${{ secrets.FIESTA_PRIVKEY }}
 
       - name: Deploy to eu-central-1
-        - uses: fifsky/ssh-action@master
-        - uses: sonots/slack-notice-action@v3
+        uses: fifsky/ssh-action@master
+        uses: sonots/slack-notice-action@v3
             with:
               title: Deploy to Frankfurt (eu-central-1)
               status: ${{ job.status }}
@@ -116,8 +116,8 @@ jobs:
           key: ${{ secrets.FIESTA_PRIVKEY }}
       
       - name: Deploy to ap-south-1
-        - uses: fifsky/ssh-action@master
-        - uses: sonots/slack-notice-action@v3
+        uses: fifsky/ssh-action@master
+        uses: sonots/slack-notice-action@v3
             with:
               title: Deploy to Mumbai (ap-south-1)
               status: ${{ job.status }}
@@ -141,8 +141,8 @@ jobs:
           key: ${{ secrets.FIESTA_PRIVKEY }}
 
       - name: Deploy to ap-east-1
-        - uses: fifsky/ssh-action@master
-        - uses: sonots/slack-notice-action@v3
+        uses: fifsky/ssh-action@master
+        uses: sonots/slack-notice-action@v3
             with:
               title: Deploy to Honk Kong (ap-east-1)
               status: ${{ job.status }}
@@ -166,8 +166,8 @@ jobs:
           key: ${{ secrets.FIESTA_PRIVKEY }}
 
       - name: Deploy to ap-southeast-1
-        - uses: fifsky/ssh-action@master
-        - uses: sonots/slack-notice-action@v3
+        uses: fifsky/ssh-action@master
+        uses: sonots/slack-notice-action@v3
             with:
               title: Deploy to Singapore (ap-southeast-1)
               status: ${{ job.status }}
