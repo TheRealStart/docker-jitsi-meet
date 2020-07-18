@@ -27,10 +27,14 @@ if [ -f $envFile ]; then
   fi
   cd trs-jitsi-meet
   if [ ! -d .git ]; then
+    git add .
+    git commit -m "committing changes before switching branches"
     git clone github-trs-jitsi-meet:TheRealStart/jitsi-meet.git .
     git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"
   else
     git fetch
+    git add .
+    git commit -m "committing changes before switching branches"
     git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"
     git pull
   fi
