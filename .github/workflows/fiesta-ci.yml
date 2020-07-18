@@ -14,17 +14,17 @@ jobs:
 
       - name: Notify slack channel about deploy started
         uses: sonots/slack-notice-action@v3
-          with:
-            title: Deploy started
-            text: Deploying fiesta jitsi services has started
-            status: ${{ job.status }}
-            username: docker-fiesta-meet
-            icon_emoji: ':octocat:'
-            channel: '#wtp-git-stream'
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          if: always()
+        with:
+          title: Deploy started
+          text: Deploying fiesta jitsi services has started
+          status: ${{ job.status }}
+          username: docker-fiesta-meet
+          icon_emoji: ':octocat:'
+          channel: '#wtp-git-stream'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
         
   
       # deploy to the main host with git
@@ -196,16 +196,16 @@ jobs:
 
       - name: Notify slack channel about deploy finished
         uses: sonots/slack-notice-action@v3
-          with:
-            title: Deploy started
-            text: Deploying fiesta jitsi services has started
-            status: ${{ job.status }}
-            username: docker-fiesta-meet
-            icon_emoji: ':octocat:'
-            channel: '#wtp-git-stream'
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          if: always()
+        with:
+          title: Deploy started
+          text: Deploying fiesta jitsi services has started
+          status: ${{ job.status }}
+          username: docker-fiesta-meet
+          icon_emoji: ':octocat:'
+          channel: '#wtp-git-stream'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
         
           
