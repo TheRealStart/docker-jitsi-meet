@@ -49,7 +49,7 @@ jobs:
             docker rm ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
             set -a &&. ./.env && set +a
             docker run --detach --volume $CONFIG/web:/config:Z --volume $CONFIG/web/letsencrypt:/etc/letsencrypt:Z --publish $HTTP_PORT:80 --name $JITSI_WEB_CONTAINER_NAME $JITSI_WEB_IMAGE_NAME
-          host: ${{ secrets.MISSED_MEET_US_WEST_1 }}
+          host: ${{ secrets.MISSED_MEET_US_EAST_1 }}
           user: ubuntu
           key: ${{ secrets.MISSED_PRIVKEY }}
 
@@ -117,11 +117,10 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()
 
-      - name: Notify slack channel about deploy finished
+      - name: Notify slack channel about deploy has finished
         uses: sonots/slack-notice-action@v3
         with:
-          title: Deploy finished
-          text: Deploying jitsi services for missed has finished
+          title: Deploy finished (Missed.com)
           status: ${{ job.status }}
           username: docker-missed-meet
           icon_emoji: ':octocat:'
