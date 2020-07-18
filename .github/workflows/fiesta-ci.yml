@@ -204,7 +204,7 @@ jobs:
         uses: sonots/slack-notice-action@v3
         with:
           title: Deploy finished
-          text: Deploying itsi services for fiesta has finished
+          text: Deploying jitsi services for fiesta has finished
           status: ${{ job.status }}
           username: docker-fiesta-meet
           icon_emoji: ':octocat:'
