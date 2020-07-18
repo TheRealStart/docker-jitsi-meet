@@ -11,21 +11,21 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v2
-
-      - uses: sonots/slack-notice-action@v3
-        with:
-          status: ${{ job.status }}
-          username: docker-fiesta-meet
-          icon_emoji: ':octocat:'
-          channel: '#wtp-git-stream'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required, but GitHub should automatically supply
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: always() # Pick up events even if the job fails or is canceled.
   
       # deploy to the main host with git
       - name: Deploy to the main host
-        uses: fifsky/ssh-action@master
+        - uses: fifsky/ssh-action@master
+        - uses: sonots/slack-notice-action@v3
+            with:
+              title: Deploy to the main server
+              status: ${{ job.status }}
+              username: docker-fiesta-meet
+              icon_emoji: ':octocat:'
+              channel: '#wtp-git-stream'
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required, but GitHub should automatically supply
+              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+            if: always() # Pick up events even if the job fails or is canceled.
         with:
           command: |
             cd ${{ secrets.FIESTA_MAIN_PROJECT_LOCATION }}
@@ -41,7 +41,18 @@ jobs:
       
       # deploy to other servers with docker
       - name: Deploy to us-west-1
-        uses: fifsky/ssh-action@master
+        - uses: fifsky/ssh-action@master
+        - uses: sonots/slack-notice-action@v3
+            with:
+              title: Deploy to California (us-west-1)
+              status: ${{ job.status }}
+              username: docker-fiesta-meet
+              icon_emoji: ':octocat:'
+              channel: '#wtp-git-stream'
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required, but GitHub should automatically supply
+              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+            if: always() # Pick up events even if the job fails or is canceled.
         with:
           command: |
             docker login ${{ secrets.DOCKER_REGISTRY }}
@@ -55,7 +66,18 @@ jobs:
           key: ${{ secrets.FIESTA_PRIVKEY }}
 
       - name: Deploy to sa-east-1
-        uses: fifsky/ssh-action@master
+        - uses: fifsky/ssh-action@master
+        - uses: sonots/slack-notice-action@v3
+            with:
+              title: Deploy to Sao Paulo (sa-east-1)
+              status: ${{ job.status }}
+              username: docker-fiesta-meet
+              icon_emoji: ':octocat:'
+              channel: '#wtp-git-stream'
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required, but GitHub should automatically supply
+              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+            if: always() # Pick up events even if the job fails or is canceled.
         with:
           command: |
             docker login ${{ secrets.DOCKER_REGISTRY }}
@@ -69,7 +91,18 @@ jobs:
           key: ${{ secrets.FIESTA_PRIVKEY }}
 
       - name: Deploy to eu-central-1
-        uses: fifsky/ssh-action@master
+        - uses: fifsky/ssh-action@master
+        - uses: sonots/slack-notice-action@v3
+            with:
+              title: Deploy to Frankfurt (eu-central-1)
+              status: ${{ job.status }}
+              username: docker-fiesta-meet
+              icon_emoji: ':octocat:'
+              channel: '#wtp-git-stream'
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required, but GitHub should automatically supply
+              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+            if: always() # Pick up events even if the job fails or is canceled.
         with:
           command: |
             docker login ${{ secrets.DOCKER_REGISTRY }}
@@ -83,7 +116,18 @@ jobs:
           key: ${{ secrets.FIESTA_PRIVKEY }}
       
       - name: Deploy to ap-south-1
-        uses: fifsky/ssh-action@master
+        - uses: fifsky/ssh-action@master
+        - uses: sonots/slack-notice-action@v3
+            with:
+              title: Deploy to Mumbai (ap-south-1)
+              status: ${{ job.status }}
+              username: docker-fiesta-meet
+              icon_emoji: ':octocat:'
+              channel: '#wtp-git-stream'
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required, but GitHub should automatically supply
+              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+            if: always() # Pick up events even if the job fails or is canceled.
         with:
           command: |
             docker login ${{ secrets.DOCKER_REGISTRY }}
@@ -97,7 +141,18 @@ jobs:
           key: ${{ secrets.FIESTA_PRIVKEY }}
 
       - name: Deploy to ap-east-1
-        uses: fifsky/ssh-action@master
+        - uses: fifsky/ssh-action@master
+        - uses: sonots/slack-notice-action@v3
+            with:
+              title: Deploy to Honk Kong (ap-east-1)
+              status: ${{ job.status }}
+              username: docker-fiesta-meet
+              icon_emoji: ':octocat:'
+              channel: '#wtp-git-stream'
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required, but GitHub should automatically supply
+              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+            if: always() # Pick up events even if the job fails or is canceled.
         with:
           command: |
             docker login ${{ secrets.DOCKER_REGISTRY }}
@@ -111,7 +166,18 @@ jobs:
           key: ${{ secrets.FIESTA_PRIVKEY }}
 
       - name: Deploy to ap-southeast-1
-        uses: fifsky/ssh-action@master
+        - uses: fifsky/ssh-action@master
+        - uses: sonots/slack-notice-action@v3
+            with:
+              title: Deploy to Singapore (ap-southeast-1)
+              status: ${{ job.status }}
+              username: docker-fiesta-meet
+              icon_emoji: ':octocat:'
+              channel: '#wtp-git-stream'
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required, but GitHub should automatically supply
+              SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+            if: always() # Pick up events even if the job fails or is canceled.
         with:
           command: |
             docker login ${{ secrets.DOCKER_REGISTRY }}
