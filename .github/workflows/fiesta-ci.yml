@@ -61,6 +61,7 @@ jobs:
                 git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"
                 git pull
               fi
+              export NODE_OPTIONS=--max_old_space_size=4096
               npm install
               make
               make source-package
@@ -110,7 +111,7 @@ jobs:
               echo "No $envFile file found" 1>&2
               return 1
             fi
-            docker-compose -f /home/ubuntu/house.fiesta.app/docker-compose-custom.yml up -d
+            docker-compose -f ${{ secrets.FIESTA_MAIN_PROJECT_LOCATION }}/docker-compose-custom.yml up -d
             docker tag jitsi/web:custom ${{ secrets.DOCKER_REGISTRY }}/fiesta_jitsi_web
             docker login ${{ secrets.DOCKER_REGISTRY }}
             docker push ${{ secrets.DOCKER_REGISTRY }}/fiesta_jitsi_web
