@@ -3,8 +3,6 @@ name: Fiesta_CI
 on:
   push:
     branches: [ fiesta ]
-  pull_request:
-    branches: [ fiesta ]
 
 jobs:
     deploy:
@@ -15,7 +13,7 @@ jobs:
       - name: Notify slack channel about deploy started
         uses: sonots/slack-notice-action@v3
         with:
-          title: Deploy started
+          title: Deploy started (Fiesta.app)
           text: Deploying jitsi services for fiesta has started
           status: ${{ job.status }}
           username: docker-fiesta-meet
@@ -33,6 +31,8 @@ jobs:
         with:
           command: |
             cd ${{ secrets.FIESTA_MAIN_PROJECT_LOCATION }}
+            git add .
+            git commit -m "commiting changes before merge if needed"
             git pull origin ${GITHUB_REF##*/}
             exec ${{ secrets.FIESTA_MAIN_PROJECT_LOCATION }}/build-custom-images.sh
             docker-compose -f docker-compose-custom up -d
@@ -203,8 +203,7 @@ jobs:
       - name: Notify slack channel about deploy finished
         uses: sonots/slack-notice-action@v3
         with:
-          title: Deploy finished
-          text: Deploying jitsi services for fiesta has finished
+          title: Deploy finished (Fiesta.app)
           status: ${{ job.status }}
           username: docker-fiesta-meet
           icon_emoji: ':octocat:'
