@@ -26,8 +26,6 @@ if [ -f $envFile ]; then
     mkdir trs-jitsi-meet
   fi
   cd trs-jitsi-meet
-  rm -rf node_modules
-  rm -rf package-lock.json
   if [ ! -d .git ]; then
     git add .
     git commit -m "committing changes before switching branches"
@@ -89,3 +87,8 @@ else
   echo "No $envFile file found" 1>&2
   return 1
 fi
+
+docker-compose -f /home/ubuntu/house.fiesta.app/docker-compose-custom.yml up -d
+docker tag jitsi/web:custom ${{ secrets.DOCKER_REGISTRY }}/fiesta_jitsi_web
+docker login ${{ secrets.DOCKER_REGISTRY }}
+docker push ${{ secrets.DOCKER_REGISTRY }}/fiesta_jitsi_web
