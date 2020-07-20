@@ -26,6 +26,8 @@ if [ -f $envFile ]; then
     mkdir trs-jitsi-meet
   fi
   cd trs-jitsi-meet
+  rm -rf node_modules
+  rm -rf package-lock.json
   if [ ! -d .git ]; then
     git add .
     git commit -m "committing changes before switching branches"

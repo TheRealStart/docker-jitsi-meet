@@ -35,7 +35,7 @@ jobs:
             git commit -m "commiting changes before merge if needed"
             git pull origin ${GITHUB_REF##*/}
             exec ${{ secrets.FIESTA_MAIN_PROJECT_LOCATION }}/build-custom-images.sh
-            docker-compose -f docker-compose-custom up -d
+            docker-compose -f docker-compose-custom.yml up -d
             docker tag jitsi/web:custom ${{ secrets.DOCKER_REGISTRY }}/fiesta_jitsi_web
             docker login ${{ secrets.DOCKER_REGISTRY }}
             docker push ${{ secrets.DOCKER_REGISTRY }}/fiesta_jitsi_web
