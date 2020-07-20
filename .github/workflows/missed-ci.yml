@@ -36,9 +36,6 @@ jobs:
               set -a
               source $envFile
 
-              CUSTOM_TRS_JITSI_MEET_BRANCH="${CUSTOM_TRS_JITSI_MEET_BRANCH:=stable/jitsi-meet_4548}"
-              CUSTOM_TRS_JICOFO_BRANCH="${CUSTOM_TRS_JICOFO_BRANCH:=stable/jitsi-meet_4548}"
-
               echo "Building custom jitsi/web"
               cd web
               echo "Getting latest custom jitsi-meet codebase"
