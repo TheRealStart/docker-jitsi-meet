@@ -87,8 +87,3 @@ else
   echo "No $envFile file found" 1>&2
   return 1
 fi
-
-docker-compose -f /home/ubuntu/house.fiesta.app/docker-compose-custom.yml up -d
-docker tag jitsi/web:custom ${{ secrets.DOCKER_REGISTRY }}/fiesta_jitsi_web
-docker login ${{ secrets.DOCKER_REGISTRY }}
-docker push ${{ secrets.DOCKER_REGISTRY }}/fiesta_jitsi_web
