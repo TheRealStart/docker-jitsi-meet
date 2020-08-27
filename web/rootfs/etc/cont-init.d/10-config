@@ -1,10 +1,10 @@
 #!/usr/bin/with-contenv bash
 
-MISSED_APP_NAME="${CUSTOM_APP_NAME:=Missed.com}"
-MISSED_APP_BG="${CUSTOM_APP_BACKGROUND:=474747}"
-MISSED_WATERMARK_URL="${CUSTOM_WATERMARK_URL:=https://missed.com}"
-MISSED_ENABLE_WELCOME_PAGE="${CUSTOM_ENABLE_WELCOME_PAGE:=true}"
-MISSED_DISABLE_SCREEN_SHARING="${CUSTOM_DISABLE_SCREEN_SHARING:=false}"
+FIESTA_APP_NAME="${CUSTOM_APP_NAME:=Fiesta.app}"
+FIESTA_APP_BG="${CUSTOM_APP_BACKGROUND:=474747}"
+FIESTA_WATERMARK_URL="${CUSTOM_WATERMARK_URL:=https://fiesta.app}"
+FIESTA_ENABLE_WELCOME_PAGE="${CUSTOM_ENABLE_WELCOME_PAGE:=true}"
+FIESTA_DISABLE_SCREEN_SHARING="${CUSTOM_DISABLE_SCREEN_SHARING:=false}"
 
 # make our folders
 mkdir -p \
@@ -121,13 +121,13 @@ if [[ ! -f /config/config.js ]]; then
              /config/config.js
     fi
 
-    if [[ $MISSED_ENABLE_WELCOME_PAGE -ne 1 || "$MISSED_ENABLE_WELCOME_PAGE" != "true" ]]; then
+    if [[ $FIESTA_ENABLE_WELCOME_PAGE -ne 1 || "$FIESTA_ENABLE_WELCOME_PAGE" != "true" ]]; then
         sed -i \
-            -e "s#enableWelcomePage:.*#enableWelcomePage: $MISSED_ENABLE_WELCOME_PAGE,#" \
+            -e "s#enableWelcomePage:.*#enableWelcomePage: $FIESTA_ENABLE_WELCOME_PAGE,#" \
             /config/config.js
     fi
 
-    if [[ $MISSED_DISABLE_SCREEN_SHARING -eq 1 || "$MISSED_DISABLE_SCREEN_SHARING" == "true" ]]; then
+    if [[ $FIESTA_DISABLE_SCREEN_SHARING -eq 1 || "$FIESTA_DISABLE_SCREEN_SHARING" == "true" ]]; then
         sed -i \
             -e "s#// desktopSharingChromeDisabled:.*#desktopSharingChromeDisabled: true,#" \
             -e "s#// desktopSharingFirefoxDisabled:.*#desktopSharingFirefoxDisabled: true,#" \
@@ -154,11 +154,11 @@ if [[ ! -f /config/interface_config.js ]]; then
     # Custom modifications
     sed -i \
         -e "s#DEFAULT_REMOTE_DISPLAY_NAME:.*#DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',#" \
-        -e "s#APP_NAME:.*#APP_NAME: '$MISSED_APP_NAME',#" \
-        -e "s#NATIVE_APP_NAME:.*#NATIVE_APP_NAME: '$MISSED_APP_NAME',#" \
-        -e "s#PROVIDER_NAME:.*#PROVIDER_NAME: '$MISSED_APP_NAME',#" \
-        -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '\#$MISSED_APP_BG',#" \
-        -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$MISSED_WATERMARK_URL',#" \
+        -e "s#APP_NAME:.*#APP_NAME: '$FIESTA_APP_NAME',#" \
+        -e "s#NATIVE_APP_NAME:.*#NATIVE_APP_NAME: '$FIESTA_APP_NAME',#" \
+        -e "s#PROVIDER_NAME:.*#PROVIDER_NAME: '$FIESTA_APP_NAME',#" \
+        -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '\#$FIESTA_APP_BG',#" \
+        -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$FIESTA_WATERMARK_URL',#" \
         /config/interface_config.js
 
     # Performance gain
@@ -193,7 +193,7 @@ fi
 if [[ ! -f /usr/share/jitsi-meet/title.html ]]; then
     cp /defaults/custom/title.html /usr/share/jitsi-meet/title.html
     sed -i \
-        -e "s#AppName#$MISSED_APP_NAME#g" \
+        -e "s#AppName#$FIESTA_APP_NAME#g" \
         /usr/share/jitsi-meet/title.html
 fi
 # Copy all custom images
