@@ -1,201 +1,201 @@
-name: Missed_CI
+# name: Missed_CI
 
-on:
-  push:
-    branches: [ missed ]
+# on:
+#   push:
+#     branches: [ missed ]
 
-jobs:
-    deploy:
-      runs-on: ubuntu-latest
-      steps:
-      - uses: actions/checkout@v2
+# jobs:
+#     deploy:
+#       runs-on: ubuntu-latest
+#       steps:
+#       - uses: actions/checkout@v2
 
-      - name: Notify slack channel about deploy started
-        uses: sonots/slack-notice-action@v3
-        with:
-          title: Deploy started (Missed.com)
-          text: Deploying jitsi services for missed.com has started
-          status: ${{ job.status }}
-          username: docker-missed-meet
-          icon_emoji: ':octocat:'
-          channel: '#wtp-git-stream'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+#       - name: Notify slack channel about deploy started
+#         uses: sonots/slack-notice-action@v3
+#         with:
+#           title: Deploy started (Missed.com)
+#           text: Deploying jitsi services for missed.com has started
+#           status: ${{ job.status }}
+#           username: docker-missed-meet
+#           icon_emoji: ':octocat:'
+#           channel: '#wtp-git-stream'
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#         if: always()
         
-      - name: Deploy to the main host
-        uses: fifsky/ssh-action@master
-        with:
-          command: |
-            cd ${{ secrets.MISSED_MAIN_PROJECT_LOCATION }}
-            git add .
-            git commit -m "commiting changes before merge if needed"
-            git pull origin ${GITHUB_REF##*/}
-            if [ -f $envFile ]; then
-              set -a
-              source $envFile
+#       - name: Deploy to the main host
+#         uses: fifsky/ssh-action@master
+#         with:
+#           command: |
+#             cd ${{ secrets.MISSED_MAIN_PROJECT_LOCATION }}
+#             git add .
+#             git commit -m "commiting changes before merge if needed"
+#             git pull origin ${GITHUB_REF##*/}
+#             if [ -f $envFile ]; then
+#               set -a
+#               source $envFile
 
-              echo "Building custom jitsi/web"
-              cd web
-              echo "Getting latest custom jitsi-meet codebase"
-              if [ ! -d "trs-jitsi-meet" ]; then
-                mkdir trs-jitsi-meet
-              fi
-              cd trs-jitsi-meet
-              if [ ! -d .git ]; then
-                git clone github-trs-jitsi-meet:TheRealStart/jitsi-meet.git .
-                git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"
-              else
-                git fetch
-                git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"
-                git pull
-              fi
-              export NODE_OPTIONS=--max_old_space_size=4096
-              npm install
-              make
-              make source-package
-              cd ..
-              tar xf trs-jitsi-meet/jitsi-meet.tar.bz2
-              docker build --tag jitsi/web:custom .
-              cd ..
+#               echo "Building custom jitsi/web"
+#               cd web
+#               echo "Getting latest custom jitsi-meet codebase"
+#               if [ ! -d "trs-jitsi-meet" ]; then
+#                 mkdir trs-jitsi-meet
+#               fi
+#               cd trs-jitsi-meet
+#               if [ ! -d .git ]; then
+#                 git clone github-trs-jitsi-meet:TheRealStart/jitsi-meet.git .
+#                 git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"
+#               else
+#                 git fetch
+#                 git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"
+#                 git pull
+#               fi
+#               export NODE_OPTIONS=--max_old_space_size=4096
+#               npm install
+#               make
+#               make source-package
+#               cd ..
+#               tar xf trs-jitsi-meet/jitsi-meet.tar.bz2
+#               docker build --tag jitsi/web:custom .
+#               cd ..
 
-              cd jicofo
-              echo "Getting latest custom jicofo codebase"
-              if [ ! -d "trs-jicofo" ]; then
-                mkdir trs-jicofo
-              fi
-              cd trs-jicofo
-              if [ ! -d .git ]; then
-                git clone github-trs-jicofo:TheRealStart/jicofo.git .
-                git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
-              else
-                git fetch
-                git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
-                git pull
-              fi
-              mvn package -DskipTests -Dassembly.skipAssembly=false
-              cd ..
-              unzip -o trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip
-              # compiled files are located under folder: trs-jicofo/jicofo-1.1-SNAPSHOT
-              echo "Building custom jicofo"
-              docker build --tag jitsi/jicofo:custom .
-              cd ..
+#               cd jicofo
+#               echo "Getting latest custom jicofo codebase"
+#               if [ ! -d "trs-jicofo" ]; then
+#                 mkdir trs-jicofo
+#               fi
+#               cd trs-jicofo
+#               if [ ! -d .git ]; then
+#                 git clone github-trs-jicofo:TheRealStart/jicofo.git .
+#                 git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
+#               else
+#                 git fetch
+#                 git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
+#                 git pull
+#               fi
+#               mvn package -DskipTests -Dassembly.skipAssembly=false
+#               cd ..
+#               unzip -o trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip
+#               # compiled files are located under folder: trs-jicofo/jicofo-1.1-SNAPSHOT
+#               echo "Building custom jicofo"
+#               docker build --tag jitsi/jicofo:custom .
+#               cd ..
 
-              # Copying prosody moderation plugin to configs path
-              if [ -d "$CONFIG" ]; then
-                if [ ! -d "$CONFIG/prosody/prosody-plugins-custom" ]; then
-                  mkdir "$CONFIG/prosody/prosody-plugins-custom"
-                fi
-                if [ ! -f "$CONFIG/prosody/prosody-plugins-custom/mod_token_moderation.lua" ]; then
-                  cp custom/prosody-plugins-custom/mod_token_moderation.lua "$CONFIG/prosody/prosody-plugins-custom/"
-                fi
-              fi
+#               # Copying prosody moderation plugin to configs path
+#               if [ -d "$CONFIG" ]; then
+#                 if [ ! -d "$CONFIG/prosody/prosody-plugins-custom" ]; then
+#                   mkdir "$CONFIG/prosody/prosody-plugins-custom"
+#                 fi
+#                 if [ ! -f "$CONFIG/prosody/prosody-plugins-custom/mod_token_moderation.lua" ]; then
+#                   cp custom/prosody-plugins-custom/mod_token_moderation.lua "$CONFIG/prosody/prosody-plugins-custom/"
+#                 fi
+#               fi
 
-              set +a
-            else
-              echo "No $envFile file found" 1>&2
-              return 1
-            fi
-            docker-compose -f ${{ secrets.MISSED_MAIN_PROJECT_LOCATION }}/docker-compose-custom.yml -f ${{ secrets.MISSED_MAIN_PROJECT_LOCATION }}/jigasi-custom.yml up -d
-            docker tag jitsi/web:custom ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
-            docker login ${{ secrets.DOCKER_REGISTRY }}
-            docker push ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
-          host: ${{ secrets.MISSED_MEET_MAIN_SERVER }}
-          user: ubuntu
-          key: ${{ secrets.MISSED_PRIVKEY }}
+#               set +a
+#             else
+#               echo "No $envFile file found" 1>&2
+#               return 1
+#             fi
+#             docker-compose -f ${{ secrets.MISSED_MAIN_PROJECT_LOCATION }}/docker-compose-custom.yml -f ${{ secrets.MISSED_MAIN_PROJECT_LOCATION }}/jigasi-custom.yml up -d
+#             docker tag jitsi/web:custom ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
+#             docker login ${{ secrets.DOCKER_REGISTRY }}
+#             docker push ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
+#           host: ${{ secrets.MISSED_MEET_MAIN_SERVER }}
+#           user: ubuntu
+#           key: ${{ secrets.MISSED_PRIVKEY }}
       
-      - name: Deploy to us-east-1
-        uses: fifsky/ssh-action@master
-        with:
-          command: |
-            docker login ${{ secrets.DOCKER_REGISTRY }}
-            docker pull ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
-            docker stop ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
-            docker rm ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
-            set -a &&. ./.env && set +a
-            docker run --detach --volume $CONFIG/web:/config:Z --volume $CONFIG/web/letsencrypt:/etc/letsencrypt:Z --publish $HTTP_PORT:80 --name $JITSI_WEB_CONTAINER_NAME $JITSI_WEB_IMAGE_NAME
-          host: ${{ secrets.MISSED_MEET_US_EAST_1 }}
-          user: ubuntu
-          key: ${{ secrets.MISSED_PRIVKEY }}
+#       - name: Deploy to us-east-1
+#         uses: fifsky/ssh-action@master
+#         with:
+#           command: |
+#             docker login ${{ secrets.DOCKER_REGISTRY }}
+#             docker pull ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
+#             docker stop ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+#             docker rm ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+#             set -a &&. ./.env && set +a
+#             docker run --detach --volume $CONFIG/web:/config:Z --volume $CONFIG/web/letsencrypt:/etc/letsencrypt:Z --publish $HTTP_PORT:80 --name $JITSI_WEB_CONTAINER_NAME $JITSI_WEB_IMAGE_NAME
+#           host: ${{ secrets.MISSED_MEET_US_EAST_1 }}
+#           user: ubuntu
+#           key: ${{ secrets.MISSED_PRIVKEY }}
 
-      - uses: sonots/slack-notice-action@v3
-        with:
-            title: Deploy to N. Virginia (us-east-1)
-            status: ${{ job.status }}
-            username: docker-missed-meet
-            icon_emoji: ':octocat:'
-            channel: '#wtp-git-stream'
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+#       - uses: sonots/slack-notice-action@v3
+#         with:
+#             title: Deploy to N. Virginia (us-east-1)
+#             status: ${{ job.status }}
+#             username: docker-missed-meet
+#             icon_emoji: ':octocat:'
+#             channel: '#wtp-git-stream'
+#         env:
+#             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#             SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#         if: always()
 
-      - name: Deploy to eu-central-1
-        uses: fifsky/ssh-action@master
-        with:
-          command: |
-            docker login ${{ secrets.DOCKER_REGISTRY }}
-            docker pull ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
-            docker stop ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
-            docker rm ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
-            set -a &&. ./.env && set +a
-            docker run --detach --volume $CONFIG/web:/config:Z --volume $CONFIG/web/letsencrypt:/etc/letsencrypt:Z --publish $HTTP_PORT:80 --name $JITSI_WEB_CONTAINER_NAME $JITSI_WEB_IMAGE_NAME
-          host: ${{ secrets.MISSED_MEET_EU_CENTRAL_1 }}
-          user: ubuntu
-          key: ${{ secrets.MISSED_PRIVKEY }}
+#       - name: Deploy to eu-central-1
+#         uses: fifsky/ssh-action@master
+#         with:
+#           command: |
+#             docker login ${{ secrets.DOCKER_REGISTRY }}
+#             docker pull ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
+#             docker stop ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+#             docker rm ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+#             set -a &&. ./.env && set +a
+#             docker run --detach --volume $CONFIG/web:/config:Z --volume $CONFIG/web/letsencrypt:/etc/letsencrypt:Z --publish $HTTP_PORT:80 --name $JITSI_WEB_CONTAINER_NAME $JITSI_WEB_IMAGE_NAME
+#           host: ${{ secrets.MISSED_MEET_EU_CENTRAL_1 }}
+#           user: ubuntu
+#           key: ${{ secrets.MISSED_PRIVKEY }}
 
-      - uses: sonots/slack-notice-action@v3
-        with:
-          title: Deploy to Frankfurt (eu-central-1)
-          status: ${{ job.status }}
-          username: docker-missed-meet
-          icon_emoji: ':octocat:'
-          channel: '#wtp-git-stream'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+#       - uses: sonots/slack-notice-action@v3
+#         with:
+#           title: Deploy to Frankfurt (eu-central-1)
+#           status: ${{ job.status }}
+#           username: docker-missed-meet
+#           icon_emoji: ':octocat:'
+#           channel: '#wtp-git-stream'
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#         if: always()
       
-      - name: Deploy to ap-south-1
-        uses: fifsky/ssh-action@master
-        with:
-          command: |
-            docker login ${{ secrets.DOCKER_REGISTRY }}
-            docker pull ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
-            docker stop ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
-            docker rm ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
-            set -a &&. ./.env && set +a
-            docker run --detach --volume $CONFIG/web:/config:Z --volume $CONFIG/web/letsencrypt:/etc/letsencrypt:Z --publish $HTTP_PORT:80 --name $JITSI_WEB_CONTAINER_NAME $JITSI_WEB_IMAGE_NAME
-          host: ${{ secrets.MISSED_MEET_AP_SOUTH_1 }}
-          user: ubuntu
-          key: ${{ secrets.MISSED_PRIVKEY }}
+#       - name: Deploy to ap-south-1
+#         uses: fifsky/ssh-action@master
+#         with:
+#           command: |
+#             docker login ${{ secrets.DOCKER_REGISTRY }}
+#             docker pull ${{ secrets.DOCKER_REGISTRY }}/missed_jitsi_web
+#             docker stop ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+#             docker rm ${{ secrets.MISSED_WEB_CONTAINER_NAME }}
+#             set -a &&. ./.env && set +a
+#             docker run --detach --volume $CONFIG/web:/config:Z --volume $CONFIG/web/letsencrypt:/etc/letsencrypt:Z --publish $HTTP_PORT:80 --name $JITSI_WEB_CONTAINER_NAME $JITSI_WEB_IMAGE_NAME
+#           host: ${{ secrets.MISSED_MEET_AP_SOUTH_1 }}
+#           user: ubuntu
+#           key: ${{ secrets.MISSED_PRIVKEY }}
 
-      - uses: sonots/slack-notice-action@v3
-        with:
-          title: Deploy to Mumbai (ap-south-1)
-          status: ${{ job.status }}
-          username: docker-missed-meet
-          icon_emoji: ':octocat:'
-          channel: '#wtp-git-stream'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+#       - uses: sonots/slack-notice-action@v3
+#         with:
+#           title: Deploy to Mumbai (ap-south-1)
+#           status: ${{ job.status }}
+#           username: docker-missed-meet
+#           icon_emoji: ':octocat:'
+#           channel: '#wtp-git-stream'
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#         if: always()
 
         
 
-      - name: Notify slack channel about deploy has finished
-        uses: sonots/slack-notice-action@v3
-        with:
-          title: Deploy finished (Missed.com)
-          status: ${{ job.status }}
-          username: docker-missed-meet
-          icon_emoji: ':octocat:'
-          channel: '#wtp-git-stream'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+#       - name: Notify slack channel about deploy has finished
+#         uses: sonots/slack-notice-action@v3
+#         with:
+#           title: Deploy finished (Missed.com)
+#           status: ${{ job.status }}
+#           username: docker-missed-meet
+#           icon_emoji: ':octocat:'
+#           channel: '#wtp-git-stream'
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#         if: always()
         
           
