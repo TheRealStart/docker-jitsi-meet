@@ -27,7 +27,7 @@ if [ -f $envFile ]; then
   fi
   cd trs-jitsi-meet
   if [ ! -d .git ]; then
-    git clone https://github.com/TheRealStart/jitsi-meet.git .
+    git clone github-trs-jitsi-meet:TheRealStart/jitsi-meet.git .
     git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"
   else
     git fetch
@@ -49,7 +49,7 @@ if [ -f $envFile ]; then
   # fi
   # cd trs-jicofo
   # if [ ! -d .git ]; then
-  #   git clone https://github.com/TheRealStart/jicofo.git .
+  #   git clone github-trs-jicofo:TheRealStart/jicofo.git .
   #   git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
   # else
   #   git fetch
