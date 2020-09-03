@@ -217,7 +217,7 @@ if [[ ! -f /usr/share/jitsi-meet/images/logo-deep-linking.png ]]; then
     cp /defaults/custom/images/logo-deep-linking.png /usr/share/jitsi-meet/images/logo-deep-linking.png
 fi
 
-if [[ ! -f /usr/share/jitsi-meet/images/watermark.png ]]; then
-    cp /defaults/custom/images/watermark.png /usr/share/jitsi-meet/images/watermark.png
-fi
+#if [[ ! -f /usr/share/jitsi-meet/images/watermark.png ]]; then
+#    cp /defaults/custom/images/watermark.png /usr/share/jitsi-meet/images/watermark.png
+#fi
 
