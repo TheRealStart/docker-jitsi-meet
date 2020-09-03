@@ -42,27 +42,27 @@ if [ -f $envFile ]; then
   docker build --tag jitsi/web:custom .
   cd ..
 
-  cd jicofo
-  echo "Getting latest custom jicofo codebase"
-  if [ ! -d "trs-jicofo" ]; then
-    mkdir trs-jicofo
-  fi
-  cd trs-jicofo
-  if [ ! -d .git ]; then
-    git clone github-trs-jicofo:TheRealStart/jicofo.git .
-    git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
-  else
-    git fetch
-    git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
-    git pull
-  fi
-  mvn package -DskipTests -Dassembly.skipAssembly=false
-  cd ..
-  unzip -o trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip
-  # compiled files are located under folder: trs-jicofo/jicofo-1.1-SNAPSHOT
-  echo "Building custom jicofo"
-  docker build --tag jitsi/jicofo:custom .
-  cd ..
+  # cd jicofo
+  # echo "Getting latest custom jicofo codebase"
+  # if [ ! -d "trs-jicofo" ]; then
+  #   mkdir trs-jicofo
+  # fi
+  # cd trs-jicofo
+  # if [ ! -d .git ]; then
+  #   git clone github-trs-jicofo:TheRealStart/jicofo.git .
+  #   git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
+  # else
+  #   git fetch
+  #   git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
+  #   git pull
+  # fi
+  # mvn package -DskipTests -Dassembly.skipAssembly=false
+  # cd ..
+  # unzip -o trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip
+  # # compiled files are located under folder: trs-jicofo/jicofo-1.1-SNAPSHOT
+  # echo "Building custom jicofo"
+  # docker build --tag jitsi/jicofo:custom .
+  # cd ..
 
   # Copying prosody moderation plugin to configs path
   if [ -d "$CONFIG" ]; then
