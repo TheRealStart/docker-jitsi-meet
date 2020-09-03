@@ -148,7 +148,6 @@ services:
         networks:
             meet.jitsi:
 
-    Video bridge
     jvb:
         image: jitsi/jvb:stable-4857
         restart: ${RESTART_POLICY}
