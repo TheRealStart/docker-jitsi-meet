@@ -5,6 +5,7 @@ MISSED_APP_BG="${CUSTOM_APP_BACKGROUND:=474747}"
 MISSED_WATERMARK_URL="${CUSTOM_WATERMARK_URL:=https://missed.com}"
 MISSED_ENABLE_WELCOME_PAGE="${CUSTOM_ENABLE_WELCOME_PAGE:=true}"
 MISSED_DISABLE_SCREEN_SHARING="${CUSTOM_DISABLE_SCREEN_SHARING:=false}"
+MISSED_ENABLE_TRANSLATION="${CUSTOM_ENABLE_TRANSLATION:=true}"
 
 # make our folders
 mkdir -p \
@@ -127,6 +128,12 @@ if [[ ! -f /config/config.js ]]; then
             /config/config.js
     fi
 
+    if [[ $MISSED_ENABLE_TRANSLATION -ne 1 || "$MISSED_ENABLE_TRANSLATION" != "true" ]]; then
+        sed -i \
+            -e "s#enableTranslation:.*#enableTranslation: $MISSED_ENABLE_TRANSLATION,#" \
+            /config/config.js
+    fi
+
     if [[ $MISSED_DISABLE_SCREEN_SHARING -eq 1 || "$MISSED_DISABLE_SCREEN_SHARING" == "true" ]]; then
         sed -i \
             -e "s#// desktopSharingChromeDisabled:.*#desktopSharingChromeDisabled: true,#" \
@@ -166,6 +173,12 @@ if [[ ! -f /config/interface_config.js ]]; then
         -e "s#DISABLE_VIDEO_BACKGROUND:.*#DISABLE_VIDEO_BACKGROUND: true,#" \
         -e "s#DISABLE_DOMINANT_SPEAKER_INDICATOR:.*#DISABLE_DOMINANT_SPEAKER_INDICATOR: true,#" \
         -e "s#DISABLE_JOIN_LEAVE_NOTIFICATIONS:.*#DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,#" \
+        /config/interface_config.js
+
+    # Custom mobile apps
+    sed -i \
+        -e "s#// MOBILE_DOWNLOAD_LINK_ANDROID:.*#MOBILE_DOWNLOAD_LINK_ANDROID: '$MOBILE_DOWNLOAD_LINK_IOS',#" \
+        -e "s#// MOBILE_DOWNLOAD_LINK_IOS:.*#MOBILE_DOWNLOAD_LINK_IOS: '$MOBILE_DOWNLOAD_LINK_IOS',#" \
         /config/interface_config.js
 
     # Disabling toolbar icons
