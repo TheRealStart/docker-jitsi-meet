@@ -18,6 +18,9 @@ services:
             - CUSTOM_WATERMARK_URL
             - CUSTOM_ENABLE_WELCOME_PAGE
             - CUSTOM_DISABLE_SCREEN_SHARING
+            - CUSTOM_ENABLE_TRANSLATION
+            - MOBILE_DOWNLOAD_LINK_ANDROID
+            - MOBILE_DOWNLOAD_LINK_IOS
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_LETSENCRYPT
