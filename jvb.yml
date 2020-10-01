@@ -24,5 +24,3 @@ services:
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
             - TZ
-        networks:
-            meet.jitsi:
