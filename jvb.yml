@@ -24,7 +24,5 @@ services:
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
             - TZ
-        depends_on:
-            - prosody
         networks:
             meet.jitsi:
