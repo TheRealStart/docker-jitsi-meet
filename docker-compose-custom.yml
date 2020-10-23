@@ -50,7 +50,7 @@ services:
 
     # XMPP server
     prosody:
-        image: jitsi/prosody:stable-4857
+        image: jitsi/prosody:stable-4627
         restart: ${RESTART_POLICY}
         # Exposing to world for other jvb instances
         ports:
