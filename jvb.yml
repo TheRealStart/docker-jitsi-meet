@@ -3,7 +3,7 @@ version: '3'
 services:
     # Video bridge
     jvb:
-        image: jitsi/jvb:stable-4857
+        image: jitsi/jvb:stable-4627
         restart: ${RESTART_POLICY}
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'
