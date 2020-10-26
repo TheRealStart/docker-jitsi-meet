@@ -1,12 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-MISSED_APP_NAME="${CUSTOM_APP_NAME:=Missed.com}"
-MISSED_APP_BG="${CUSTOM_APP_BACKGROUND:=474747}"
-MISSED_WATERMARK_URL="${CUSTOM_WATERMARK_URL:=https://missed.com}"
-MISSED_ENABLE_WELCOME_PAGE="${CUSTOM_ENABLE_WELCOME_PAGE:=true}"
-MISSED_DISABLE_SCREEN_SHARING="${CUSTOM_DISABLE_SCREEN_SHARING:=false}"
-
-# make our folders
+# make our folders
 mkdir -p \
     /config/{nginx/site-confs,keys} \
     /run \
@@ -70,7 +64,7 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
     fi
 fi
 
-# copy config files
+# copy config files
 tpl /defaults/nginx.conf > /config/nginx/nginx.conf
 
 tpl /defaults/meet.conf > /config/nginx/meet.conf
@@ -89,90 +83,8 @@ if [[ -f /config/custom-config.js ]]; then
     cat /config/custom-config.js >> /config/config.js
 fi
 
-    if [[ $MISSED_ENABLE_WELCOME_PAGE -ne 1 || "$MISSED_ENABLE_WELCOME_PAGE" != "true" ]]; then
-        sed -i \
-            -e "s#enableWelcomePage:.*#enableWelcomePage: $MISSED_ENABLE_WELCOME_PAGE,#" \
-            /config/config.js
-    fi
-
-    if [[ $MISSED_DISABLE_SCREEN_SHARING -eq 1 || "$MISSED_DISABLE_SCREEN_SHARING" == "true" ]]; then
-        sed -i \
-            -e "s#// desktopSharingChromeDisabled:.*#desktopSharingChromeDisabled: true,#" \
-            -e "s#// desktopSharingFirefoxDisabled:.*#desktopSharingFirefoxDisabled: true,#" \
-            /config/config.js
-    fi
-
-    sed -i \
-        -e "s#// resolution:.*#resolution: 480,#" \
-        /config/config.js
-
-    sed -i \
-        "s/stun:meet-jit-si-turnrelay.jitsi.net:443/${JVB_STUN_SERVERS}/1" \
-        /config/config.js
-
-    sed -i \
-        "/s/enabled: true/enabled: false/1" \
-        /config/config.js
-
-fi
-
-    if [[ $MISSED_ENABLE_WELCOME_PAGE -ne 1 || "$MISSED_ENABLE_WELCOME_PAGE" != "true" ]]; then
-        sed -i \
-            -e "s#enableWelcomePage:.*#enableWelcomePage: $MISSED_ENABLE_WELCOME_PAGE,#" \
-            /config/config.js
-    fi
-
-    if [[ $MISSED_DISABLE_SCREEN_SHARING -eq 1 || "$MISSED_DISABLE_SCREEN_SHARING" == "true" ]]; then
-        sed -i \
-            -e "s#// desktopSharingChromeDisabled:.*#desktopSharingChromeDisabled: true,#" \
-            -e "s#// desktopSharingFirefoxDisabled:.*#desktopSharingFirefoxDisabled: true,#" \
-            /config/config.js
-    fi
-
-    sed -i \
-        -e "s#// resolution:.*#resolution: 480,#" \
-        /config/config.js
-
-    sed -i \
-        "s/stun:meet-jit-si-turnrelay.jitsi.net:443/${JITSI_WEB_STUN_SERVER}/g" \
-        /config/config.js
-
-    sed -i \
-        "/s/enabled: true/enabled: false/g" \
-        /config/config.js
-
-fi
-
 if [[ ! -f /config/interface_config.js ]]; then
     cp /defaults/interface_config.js /config/interface_config.js
-
-    # Custom modifications
-    sed -i \
-        -e "s#DEFAULT_REMOTE_DISPLAY_NAME:.*#DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',#" \
-        -e "s#APP_NAME:.*#APP_NAME: '$MISSED_APP_NAME',#" \
-        -e "s#NATIVE_APP_NAME:.*#NATIVE_APP_NAME: '$MISSED_APP_NAME',#" \
-        -e "s#PROVIDER_NAME:.*#PROVIDER_NAME: '$MISSED_APP_NAME',#" \
-        -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '\#$MISSED_APP_BG',#" \
-        -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$MISSED_WATERMARK_URL',#" \
-        /config/interface_config.js
-
-    # Performance gain
-    sed -i \
-        -e "s#DISABLE_VIDEO_BACKGROUND:.*#DISABLE_VIDEO_BACKGROUND: true,#" \
-        -e "s#DISABLE_DOMINANT_SPEAKER_INDICATOR:.*#DISABLE_DOMINANT_SPEAKER_INDICATOR: true,#" \
-        -e "s#DISABLE_JOIN_LEAVE_NOTIFICATIONS:.*#DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,#" \
-        /config/interface_config.js
-
-    # Disabling toolbar icons
-    sed -i \
-        -e "s#'info', ##" \
-        -e "s#'sharedvideo', ##" \
-        -e "s#'invite', ##" \
-        -e "s#'videobackgroundblur', ##" \
-        -e "s#'download', ##" \
-        -e "s#'help', ##" \
-        -e "s#'download', ##" \
-        /config/interface_config.js
 
     # It will remove parameter 'closedcaptions' from TOOLBAR_BUTTONS if ENABLE_TRANSCRIPTIONS is false,
     # because it enabled by default, but not supported out of the box.
@@ -182,66 +94,3 @@ if [[ ! -f /config/interface_config.js ]]; then
             /config/interface_config.js
     fi
 fi
-
-# Custom by Rustam
-if [[ ! -f /usr/share/jitsi-meet/title.html ]]; then
-    cp /defaults/custom/title.html /usr/share/jitsi-meet/title.html
-    sed -i \
-        -e "s#AppName#$MISSED_APP_NAME#g" \
-        /usr/share/jitsi-meet/title.html
-fi
-# Copy all custom images
-if [[ ! -f /usr/share/jitsi-meet/favicon.ico ]]; then
-    cp /defaults/custom/images/favicon.ico /usr/share/jitsi-meet/favicon.ico
-fi
-
-if [[ ! -f /usr/share/jitsi-meet/images/favicon.ico ]]; then
-    cp /defaults/custom/images/favicon.ico /usr/share/jitsi-meet/images/favicon.ico
-fi
-
-if [[ ! -f /usr/share/jitsi-meet/images/logo.png ]]; then
-    cp /defaults/custom/images/logo.png /usr/share/jitsi-meet/images/logo.png
-fi
-
-if [[ ! -f /usr/share/jitsi-meet/images/logo_square.png ]]; then
-    cp /defaults/custom/images/logo_square.png /usr/share/jitsi-meet/images/logo_square.png
-fi
-
-if [[ ! -f /usr/share/jitsi-meet/images/logo-deep-linking.png ]]; then
-    cp /defaults/custom/images/logo-deep-linking.png /usr/share/jitsi-meet/images/logo-deep-linking.png
-fi
-
-if [[ ! -f /usr/share/jitsi-meet/images/watermark.png ]]; then
-    cp /defaults/custom/images/watermark.png /usr/share/jitsi-meet/images/watermark.png
-# Custom by Rustam
-if [[ ! -f /usr/share/jitsi-meet/title.html ]]; then
-    cp /defaults/custom/title.html /usr/share/jitsi-meet/title.html
-    sed -i \
-        -e "s#AppName#$MISSED_APP_NAME#g" \
-        /usr/share/jitsi-meet/title.html
-fi
-# Copy all custom images
-if [[ ! -f /usr/share/jitsi-meet/favicon.ico ]]; then
-    cp /defaults/custom/images/favicon.ico /usr/share/jitsi-meet/favicon.ico
-fi
-
-if [[ ! -f /usr/share/jitsi-meet/images/favicon.ico ]]; then
-    cp /defaults/custom/images/favicon.ico /usr/share/jitsi-meet/images/favicon.ico
-fi
-
-if [[ ! -f /usr/share/jitsi-meet/images/logo.png ]]; then
-    cp /defaults/custom/images/logo.png /usr/share/jitsi-meet/images/logo.png
-fi
-
-if [[ ! -f /usr/share/jitsi-meet/images/logo_square.png ]]; then
-    cp /defaults/custom/images/logo_square.png /usr/share/jitsi-meet/images/logo_square.png
-fi
-
-if [[ ! -f /usr/share/jitsi-meet/images/logo-deep-linking.png ]]; then
-    cp /defaults/custom/images/logo-deep-linking.png /usr/share/jitsi-meet/images/logo-deep-linking.png
-fi
-
-if [[ ! -f /usr/share/jitsi-meet/images/watermark.png ]]; then
-    cp /defaults/custom/images/watermark.png /usr/share/jitsi-meet/images/watermark.png
-fi
-
