@@ -13,11 +13,12 @@ services:
             - ${CONFIG}/web/letsencrypt:/etc/letsencrypt:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
         environment:
-            - CUSTOM_APP_NAME
-            - CUSTOM_APP_BACKGROUND
             - CUSTOM_WATERMARK_URL
             - CUSTOM_ENABLE_WELCOME_PAGE
+            - CUSTOM_APP_NAME
+            - CUSTOM_APP_BACKGROUND
             - CUSTOM_DISABLE_SCREEN_SHARING
+            - CUSTOM_ENABLE_TRANSLATION
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_LETSENCRYPT
