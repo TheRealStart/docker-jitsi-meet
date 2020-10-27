@@ -104,7 +104,7 @@ if [[ -f $envFile ]]; then
         exit 1
     fi
 
-    cd trs-jitis-meet
+    cd trs-jitsi-meet
 
     # Compile with make and create source package
     echo -e "${BLUE}Running make command...${NC}"
