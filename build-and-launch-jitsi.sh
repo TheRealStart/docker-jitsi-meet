@@ -121,7 +121,7 @@ if [[ -f $envFile ]]; then
 
     # Unpack and build jitsi-meet
     echo -e "${BLUE}Unpacking and building jitsi-meet...${NC}"
-    if ! tar -xzvf trs-jitsi-meet/jitsi-meet.tar.bz2; then
+    if ! tar xf trs-jitsi-meet/jitsi-meet.tar.bz2; then
         echo -e "${RED}Failed to untar!${NC}"
         sleep 5
         exit 1
