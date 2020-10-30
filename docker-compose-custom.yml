@@ -204,7 +204,7 @@ services:
 
     # Video bridge
     jvb:
-        image: jitsi/jvb:stable-5142
+        image: jitsi/jvb:custom
         restart: ${RESTART_POLICY}
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'

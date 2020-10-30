@@ -29,6 +29,7 @@ if [[ -f $envFile ]]; then
         exit 1
     fi
 
+    # Build jitsi/web:custom
     echo -e "${BLUE}Building custom jitsi/web...${NC}"
     cd web
     echo -e "${BLUE}Getting latest custom jitsi-meet...${NC}"
@@ -55,22 +56,31 @@ if [[ -f $envFile ]]; then
             exit 1
         fi
     else
-        if ! git fetch; then
-            echo -e "${RED}Failed to git fetch!${NC}"
+        if ! git fetch; then 
+            echo -e "${RED}Failed to git fetch${NC}"
             sleep 5
             exit 1
         fi
-        if ! git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"; then
-            echo -e "${RED}Failed to git checkout!${NC}"
+        if ! git add .; then
+            echo -e "${RED}Failed to git add${NC}"
+            sleep 5
+            exit 1
+        fi
+        git commit -m "commiting changes if needed"
+        if ! git checkout "$CUSTOM_TRS_JICOFO_BRANCH"; then
+            echo -e "${RED}Failed to git checkout${NC}"
             sleep 5
             exit 1
         fi
         if ! git pull; then
-            echo -e "${RED}Failed to git pull!${NC}"
+            echo -e "${RED}Failed to git pull${NC}"
             sleep 5
             exit 1
         fi
     fi
+
+    rm -rf package-lock.json
+    rm -rf node_modules/
 
     # Install npm packages
     echo -e "${BLUE}Installing npm packages...${NC}"
@@ -133,8 +143,76 @@ if [[ -f $envFile ]]; then
         exit 1
     fi
 
-    # Launching jitsi services
     cd ..
+
+    # Build jvb:custom
+    cd jvb
+    echo -e "${BLUE}Getting latest custom jvb codebase...${NC}"
+    if [ ! -d "trs-jvb" ]; then
+        mkdir trs-jvb
+    fi
+    cd trs-jvb
+    if [ ! -d .git ]; then 
+        if ! git clone github-trs-jvb:TheRealStart/jitsi-videobridge.git .; then
+            echo -e "${RED}Failed to clone jvb!${NC}"
+            sleep 5
+            exit 1
+        fi
+        if ! git add .; then
+            echo -e "${RED}Failed to git add${NC}"
+            sleep 5
+            exit 1
+        fi
+        git commit -m "commiting changes if needed"
+        if ! git checkout "$CUSTOM_TRS_JVB_BRANCH"; then
+            echo -e "${RED}Failed to git checkout${NC}"
+            sleep 5
+            exit 1
+        fi
+    else
+        if ! git fetch; then 
+            echo -e "${RED}Failed to git fetch${NC}"
+            sleep 5
+            exit 1
+        fi
+        if ! git add .; then
+            echo -e "${RED}Failed to git add${NC}"
+            sleep 5
+            exit 1
+        fi
+        git commit -m "commiting changes if needed"
+        if ! git checkout "$CUSTOM_TRS_JVB_BRANCH"; then
+            echo -e "${RED}Failed to git checkout${NC}"
+            sleep 5
+            exit 1
+        fi
+        if ! git pull; then
+            echo -e "${RED}Failed to git pull${NC}"
+            sleep 5
+            exit 1
+        fi
+    fi
+    if ! mvn package -DskipTests -Dassembly.skipAssembly=false; then
+        echo -e "${RED}Failed to mvn package${NC}"
+        sleep 5
+        exit 1
+    fi
+    if ! unzip -o jvb/target/jitsi-videobridge-2.1-SNAPSHOT-archive.zip; then
+        echo -e "${RED}Failed to unzip ${NC}"
+        sleep 5
+        exit 1
+    fi
+    cd ..
+    
+    echo "${BLUE}Building custom jvb...${NC}"
+        if ! docker build --tag jitsi/jvb:custom .; then
+            echo -e "${RED}Failed to docker build${NC}"
+            sleep 5
+            exit 1
+        fi
+    cd ..
+
+    # Launching jitsi services
     docker-compose -f docker-compose-custom.yml up -d --force-recreate
 else
     echo -e "${RED}.env file not found${NC}"

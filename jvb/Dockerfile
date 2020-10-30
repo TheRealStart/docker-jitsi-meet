@@ -7,5 +7,6 @@ RUN \
 	apt-cleanup
 
 COPY rootfs/ /
+COPY trs-jvb/jitsi-videobridge-2.1-SNAPSHOT/ /usr/share/jitsi-videobridge/
 
 VOLUME /config
