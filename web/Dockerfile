@@ -3,8 +3,6 @@ FROM ${JITSI_REPO}/base
 
 ADD https://dl.eff.org/certbot-auto /usr/local/bin/
 
-COPY rootfs/ /
-
 RUN \
 	apt-dpkg-wrap apt-get update && \
 	apt-dpkg-wrap apt-get install -y cron nginx-extras jitsi-meet-web && \
@@ -16,6 +14,7 @@ RUN \
 	rm -f /etc/nginx/conf.d/default.conf && \
 	rm -rf /tmp/pkg /var/cache/apt
 
+COPY rootfs/ /
 COPY jitsi-meet/ /usr/share/jitsi-meet/
 
 RUN \
