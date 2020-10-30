@@ -15,6 +15,7 @@ RUN \
 	apt-cleanup && \
 	rm -rf /tmp/pkg /var/cache/apt
 
+COPY rootfs/ /
 COPY jitsi-meet/ /usr/share/jitsi-meet/
 
 EXPOSE 80 443

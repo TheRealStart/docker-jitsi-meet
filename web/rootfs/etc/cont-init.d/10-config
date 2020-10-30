@@ -95,14 +95,6 @@ if [[ ! -f /config/interface_config.js ]]; then
     fi
 fi
 
-# Customized part of the script
-MISSED_APP_NAME="${CUSTOM_APP_NAME:=Missed.com}"
-MISSED_APP_BG="${CUSTOM_APP_BACKGROUND:=474747}"
-MISSED_WATERMARK_URL="${CUSTOM_WATERMARK_URL:=https://missed.com}"
-MISSED_ENABLE_WELCOME_PAGE="${CUSTOM_ENABLE_WELCOME_PAGE:=true}"
-MISSED_DISABLE_SCREEN_SHARING="${CUSTOM_DISABLE_SCREEN_SHARING:=false}"
-MISSED_ENABLE_TRANSLATION="${CUSTOM_ENABLE_TRANSLATION:=true}"
-
 # Custom modifications
 sed -i \
     -e "s#DEFAULT_REMOTE_DISPLAY_NAME:.*#DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',#" \
