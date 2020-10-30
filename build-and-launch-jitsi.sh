@@ -143,6 +143,33 @@ if [[ -f $envFile ]]; then
         exit 1
     fi
 
+    # Customize interface config
+    echo -e "${BLUE}Customizing interface config...${NC}"
+    if ! sed -i \
+        -e "s#DEFAULT_REMOTE_DISPLAY_NAME:.*#DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',#" \
+        -e "s#APP_NAME:.*#APP_NAME: '$CUSTOM_APP_NAME',#" \
+        -e "s#NATIVE_APP_NAME:.*#NATIVE_APP_NAME: '$CUSTOM_APP_NAME',#" \
+        -e "s#PROVIDER_NAME:.*#PROVIDER_NAME: '$CUSTOM_APP_NAME',#" \
+        -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '\#$CUSTOM_APP_BACKGROUND',#" \
+        -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$CUSTOM_WATERMARK_URL',#" \
+        -e "s#DISABLE_VIDEO_BACKGROUND:.*#DISABLE_VIDEO_BACKGROUND: true,#" \
+        -e "s#DISABLE_DOMINANT_SPEAKER_INDICATOR:.*#DISABLE_DOMINANT_SPEAKER_INDICATOR: true,#" \
+        -e "s#DISABLE_JOIN_LEAVE_NOTIFICATIONS:.*#DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,#" \
+        -e "s#// MOBILE_DOWNLOAD_LINK_ANDROID:.*#MOBILE_DOWNLOAD_LINK_ANDROID: '$MOBILE_DOWNLOAD_LINK_ANDROID',#" \
+        -e "s#// MOBILE_DOWNLOAD_LINK_IOS:.*#MOBILE_DOWNLOAD_LINK_IOS: '$MOBILE_DOWNLOAD_LINK_IOS',#" \
+        -e "s#'info', ##" \
+        -e "s#'sharedvideo', ##" \
+        -e "s#'invite', ##" \
+        -e "s#'videobackgroundblur', ##" \
+        -e "s#'download', ##" \
+        -e "s#'help', ##" \
+        -e "s#'download', ##" \
+        ${CONFIG}/web/interface_config.js; then
+            echo -e "${RED}Failed to customize interface_config.js!${NC}"
+            sleep 5
+            exit 1
+    fi
+
     cd ..
 
     # Build jvb:custom
