@@ -67,7 +67,7 @@ if [[ -f $envFile ]]; then
             exit 1
         fi
         git commit -m "commiting changes if needed"
-        if ! git checkout "$CUSTOM_TRS_JICOFO_BRANCH"; then
+        if ! git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"; then
             echo -e "${RED}Failed to git checkout${NC}"
             sleep 5
             exit 1
