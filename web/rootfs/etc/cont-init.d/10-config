@@ -83,39 +83,38 @@ if [[ ! -f /config/interface_config.js ]]; then
             -e "s#'closedcaptions', ##" \
             /config/interface_config.js
     fi
+
+    # Custom modifications
+    sed -i \
+        -e "s#DEFAULT_REMOTE_DISPLAY_NAME:.*#DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',#" \
+        -e "s#APP_NAME:.*#APP_NAME: '$CUSTOM_APP_NAME',#" \
+        -e "s#NATIVE_APP_NAME:.*#NATIVE_APP_NAME: '$CUSTOM_APP_NAME',#" \
+        -e "s#PROVIDER_NAME:.*#PROVIDER_NAME: '$CUSTOM_APP_NAME',#" \
+        -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '\#$CUSTOM_APP_BACKGROUND',#" \
+        -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$CUSTOM_WATERMARK_URL',#" \
+        /config/interface_config.js
+
+    # Performance gain
+    sed -i \
+        -e "s#DISABLE_VIDEO_BACKGROUND:.*#DISABLE_VIDEO_BACKGROUND: true,#" \
+        -e "s#DISABLE_DOMINANT_SPEAKER_INDICATOR:.*#DISABLE_DOMINANT_SPEAKER_INDICATOR: true,#" \
+        -e "s#DISABLE_JOIN_LEAVE_NOTIFICATIONS:.*#DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,#" \
+        /config/interface_config.js
+
+    # Custom mobile apps
+    sed -i \
+        -e "s#// MOBILE_DOWNLOAD_LINK_ANDROID:.*#MOBILE_DOWNLOAD_LINK_ANDROID: '$MOBILE_DOWNLOAD_LINK_ANDROID',#" \
+        -e "s#// MOBILE_DOWNLOAD_LINK_IOS:.*#MOBILE_DOWNLOAD_LINK_IOS: '$MOBILE_DOWNLOAD_LINK_IOS',#" \
+        /config/interface_config.js
+
+    # Disabling toolbar icons
+    sed -i \
+        -e "s#'info', ##" \
+        -e "s#'sharedvideo', ##" \
+        -e "s#'invite', ##" \
+        -e "s#'videobackgroundblur', ##" \
+        -e "s#'download', ##" \
+        -e "s#'help', ##" \
+        -e "s#'download', ##" \
+        /config/interface_config.js
 fi
-
-# Custom modifications
-sed -i \
-    -e "s#DEFAULT_REMOTE_DISPLAY_NAME:.*#DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',#" \
-    -e "s#APP_NAME:.*#APP_NAME: '$CUSTOM_APP_NAME',#" \
-    -e "s#NATIVE_APP_NAME:.*#NATIVE_APP_NAME: '$CUSTOM_APP_NAME',#" \
-    -e "s#PROVIDER_NAME:.*#PROVIDER_NAME: '$CUSTOM_APP_NAME',#" \
-    -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '\#$CUSTOM_APP_BACKGROUND',#" \
-    -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$CUSTOM_WATERMARK_URL',#" \
-    /config/interface_config.js
-
-# Performance gain
-sed -i \
-    -e "s#DISABLE_VIDEO_BACKGROUND:.*#DISABLE_VIDEO_BACKGROUND: true,#" \
-    -e "s#DISABLE_DOMINANT_SPEAKER_INDICATOR:.*#DISABLE_DOMINANT_SPEAKER_INDICATOR: true,#" \
-    -e "s#DISABLE_JOIN_LEAVE_NOTIFICATIONS:.*#DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,#" \
-    /config/interface_config.js
-
-# Custom mobile apps
-sed -i \
-    -e "s#// MOBILE_DOWNLOAD_LINK_ANDROID:.*#MOBILE_DOWNLOAD_LINK_ANDROID: '$MOBILE_DOWNLOAD_LINK_ANDROID',#" \
-    -e "s#// MOBILE_DOWNLOAD_LINK_IOS:.*#MOBILE_DOWNLOAD_LINK_IOS: '$MOBILE_DOWNLOAD_LINK_IOS',#" \
-    /config/interface_config.js
-
-# Disabling toolbar icons
-sed -i \
-    -e "s#'info', ##" \
-    -e "s#'sharedvideo', ##" \
-    -e "s#'invite', ##" \
-    -e "s#'videobackgroundblur', ##" \
-    -e "s#'download', ##" \
-    -e "s#'help', ##" \
-    -e "s#'download', ##" \
-    /config/interface_config.js
-
