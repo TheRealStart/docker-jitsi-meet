@@ -145,12 +145,11 @@ if [[ -f $envFile ]]; then
 
     # Customize interface config
     echo -e "${BLUE}Customizing interface config...${NC}"
-    if ! sed -i \
+    if ! sudo sed -i \
         -e "s#DEFAULT_REMOTE_DISPLAY_NAME:.*#DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',#" \
         -e "s#APP_NAME:.*#APP_NAME: '$CUSTOM_APP_NAME',#" \
         -e "s#NATIVE_APP_NAME:.*#NATIVE_APP_NAME: '$CUSTOM_APP_NAME',#" \
         -e "s#PROVIDER_NAME:.*#PROVIDER_NAME: '$CUSTOM_APP_NAME',#" \
-        -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '\#$CUSTOM_APP_BACKGROUND',#" \
         -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$CUSTOM_WATERMARK_URL',#" \
         -e "s#DISABLE_VIDEO_BACKGROUND:.*#DISABLE_VIDEO_BACKGROUND: true,#" \
         -e "s#DISABLE_DOMINANT_SPEAKER_INDICATOR:.*#DISABLE_DOMINANT_SPEAKER_INDICATOR: true,#" \
