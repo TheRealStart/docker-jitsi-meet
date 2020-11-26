@@ -4,6 +4,7 @@ FROM ${JITSI_REPO}/base
 ADD https://dl.eff.org/certbot-auto /usr/local/bin/
 
 COPY rootfs/ /
+COPY rootfs/defaults/custom/apple-app-site-association /config/
 
 RUN \
 	apt-dpkg-wrap apt-get update && \
