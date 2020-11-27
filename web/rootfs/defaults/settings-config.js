@@ -229,7 +229,7 @@ config.peopleSearchQueryTypes = ['user','conferenceRooms'];
 config.prejoinPageEnabled = {{ $ENABLE_PREJOIN_PAGE }};
 
 // Welcome page
-config.enableWelcomePage = {{ $CUSTOM_ENABLE_WELCOME_PAGE }};
+config.enableWelcomePage = {{ $ENABLE_WELCOME_PAGE }};
 
 // Require users to always specify a display name.
 config.requireDisplayName = {{ $ENABLE_REQUIRE_DISPLAY_NAME }};
