@@ -24,6 +24,7 @@ services:
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
             - ENABLE_STUN_TURN
+            - ENABLE_XMPP_WEBSOCKET
             - DISABLE_HTTPS
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
