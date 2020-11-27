@@ -5,3 +5,4 @@ docker-compose.override.yml
 trs-jitsi-meet/
 web/jitsi-meet/
 trs-jvb/
+trs-jicofo/
