@@ -176,6 +176,7 @@ services:
             - TURNCREDENTIALS_PORT
             - PROSODY_COTURN_HOST
             - TURNCREDENTIALS_TTL
+            - TURNCREDENTIALS_SECRET
         networks:
             meet.jitsi:
                 aliases:
