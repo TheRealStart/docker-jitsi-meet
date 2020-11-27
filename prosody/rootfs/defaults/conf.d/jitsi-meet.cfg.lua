@@ -8,6 +8,7 @@ http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool)}}
+{{ $ENABLE_TURNCREDENTIALS := .Env.ENABLE_TURNCREDENTIALS | default "0" | toBool }}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
 {{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
 {{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
@@ -17,6 +18,16 @@ http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
+{{ if .Env.ENABLE_TURNCREDENTIALS }}
+turncredentials_secret = "{{ .Env.TURNCREDENTIALS_SECRET }}";
+turncredentials_port = {{ .Env.TURNCREDENTIALS_PORT }};
+turncredentials_ttl = {{ .Env.TURNCREDENTIALS_TTL }};
+turncredentials = {
+    { type = "stun", host = "{{ .Env.PROSODY_COTURN_HOST }}" },
+    { type = "turn", host = "{{ .Env.PROSODY_COTURN_HOST }}", port = {{ .Env.TURNCREDENTIALS_PORT }} },
+    { type = "turns", host = "{{ .Env.PROSODY_COTURN_HOST }}", port = {{ .Env.TURNCREDENTIALS_PORT }}, transport = "tcp" }
+}
+{{ end }}
 
 {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_ISSUERS }}
 asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS) }}" }
@@ -95,6 +106,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "ldap") }}
         "auth_cyrus";
         {{end}}
+        {{ if .Env.ENABLE_TURNCREDENTIALS }}
+        "turncredentials";
+        {{ end }}
     }
 
     {{ if $ENABLE_LOBBY }}
