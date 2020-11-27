@@ -109,6 +109,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{ if .Env.ENABLE_TURNCREDENTIALS }}
         "turncredentials";
         {{ end }}
+        {{ if .Env.ENABLE_WEBSOCKETS }}
+        "websocket";
+        {{ end }}
     }
 
     {{ if and $ENABLE_LOBBY (not $ENABLE_GUEST_DOMAIN) }}
