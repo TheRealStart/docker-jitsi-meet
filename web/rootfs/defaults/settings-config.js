@@ -9,7 +9,8 @@
 {{ $ENABLE_NO_AUDIO_DETECTION := .Env.ENABLE_NO_AUDIO_DETECTION | default "false" | toBool -}}
 {{ $ENABLE_P2P := .Env.ENABLE_P2P | default "true" | toBool -}}
 {{ $ENABLE_PREJOIN_PAGE := .Env.ENABLE_PREJOIN_PAGE | default "false" | toBool -}}
-{{ $CUSTOM_ENABLE_WELCOME_PAGE := .Env.CUSTOM_ENABLE_WELCOME_PAGE | default "false" | toBool -}}
+{{ $ENABLE_WELCOME_PAGE := .Env.ENABLE_WELCOME_PAGE | default "false" | toBool -}}
+{{ $ENABLE_STUN_TURN := .Env.ENABLE_STUN_TURN | default "false" | toBool -}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "false" | toBool -}}
 {{ $ENABLE_REMB := .Env.ENABLE_REMB | default "true" | toBool -}}
 {{ $ENABLE_REQUIRE_DISPLAY_NAME := .Env.ENABLE_REQUIRE_DISPLAY_NAME | default "false" | toBool -}}
@@ -30,6 +31,7 @@
 {{ $TESTING_CAP_SCREENSHARE_BITRATE := .Env.TESTING_CAP_SCREENSHARE_BITRATE | default "1" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN -}}
+{{ $CHANNEL_LAST_N := .Env.CHANNEL_LAST_N | default -1 -}}
 
 
 // Video configuration.
@@ -66,6 +68,7 @@ config.startAudioMuted = {{ $START_AUDIO_MUTED }};
 if (!config.hasOwnProperty('p2p')) config.p2p = {};
 
 config.p2p.enabled = {{ $ENABLE_P2P }};
+config.p2p.useStunTurn = {{ $ENABLE_STUN_TURN }};
 
 
 // Etherpad
@@ -277,6 +280,13 @@ config.deploymentInfo.envType = '{{ .Env.DEPLOYMENTINFO_ENVIRONMENT_TYPE }}';
 config.deploymentInfo.userRegion = '{{ $DEPLOYMENTINFO_USERREGION }}';
 {{ end -}}
 
+{{ if $DEPLOYMENTINFO_REGION -}}
+config.deploymentInfo.region = '{{ $DEPLOYMENTINFO_REGION }}';
+{{ end -}}
+
+{{ if $DEPLOYMENTINFO_SHARD -}}
+config.deploymentInfo.shard = '{{ $DEPLOYMENTINFO_SHARD }}';
+{{ end -}}
 
 // Testing
 //
@@ -286,3 +296,24 @@ if (!config.testing.hasOwnProperty('octo')) config.testing.octo = {};
 
 config.testing.capScreenshareBitrate = {{ $TESTING_CAP_SCREENSHARE_BITRATE }};
 config.testing.octo.probability = {{ $TESTING_OCTO_PROBABILITY }};
+
+// Stun - Turn with jvb
+//
+
+config.useStunTurn = {{ $ENABLE_STUN_TURN }};
+
+// Channel last N
+//
+
+config.channelLastN = {{ $CHANNEL_LAST_N }};
+
+{{ if not eq $CHANNEL_LAST_N -1 -}}
+if (!config.hasOwnProperty("lastNLimits")) config.lastNLimits = {};
+config.lastNLimits = {
+    5: 20,
+    30: 15,
+    50: 10,
+    70: 5,
+    90: 2
+}
+{{ end -}}
