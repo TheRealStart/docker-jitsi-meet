@@ -309,7 +309,6 @@ config.useStunTurn = {{ $ENABLE_STUN_TURN }};
 
 config.channelLastN = {{ $CHANNEL_LAST_N }};
 
-{{ if not eq $CHANNEL_LAST_N -1 -}}
 if (!config.hasOwnProperty("lastNLimits")) config.lastNLimits = {};
 config.lastNLimits = {
     5: 20,
@@ -318,4 +317,3 @@ config.lastNLimits = {
     70: 5,
     90: 2
 }
-{{ end -}}
