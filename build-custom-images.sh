@@ -50,7 +50,7 @@ if [[ -f $envFile ]]; then
             sleep 5
             exit 1
         fi
-        if ! git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"; then
+        if ! git checkout "$TRS_JITSI_MEET_BRANCH"; then
             echo -e "${RED}Failed to git checkout!${NC}"
             sleep 5
             exit 1
@@ -67,7 +67,7 @@ if [[ -f $envFile ]]; then
             exit 1
         fi
         git commit -m "commiting changes if needed"
-        if ! git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"; then
+        if ! git checkout "$TRS_JITSI_MEET_BRANCH"; then
             echo -e "${RED}Failed to git checkout${NC}"
             sleep 5
             exit 1
@@ -147,62 +147,62 @@ if [[ -f $envFile ]]; then
 
     # Build jvb:custom
     cd jvb
-    echo -e "${BLUE}Getting latest custom jvb codebase...${NC}"
-    if [ ! -d "trs-jvb" ]; then
-        mkdir trs-jvb
-    fi
-    cd trs-jvb
-    if [ ! -d .git ]; then 
-        if ! git clone github-trs-jvb:TheRealStart/jitsi-videobridge.git .; then
-            echo -e "${RED}Failed to clone jvb!${NC}"
-            sleep 5
-            exit 1
-        fi
-        if ! git add .; then
-            echo -e "${RED}Failed to git add${NC}"
-            sleep 5
-            exit 1
-        fi
-        git commit -m "commiting changes if needed"
-        if ! git checkout "$CUSTOM_TRS_JVB_BRANCH"; then
-            echo -e "${RED}Failed to git checkout${NC}"
-            sleep 5
-            exit 1
-        fi
-    else
-        if ! git fetch; then 
-            echo -e "${RED}Failed to git fetch${NC}"
-            sleep 5
-            exit 1
-        fi
-        if ! git add .; then
-            echo -e "${RED}Failed to git add${NC}"
-            sleep 5
-            exit 1
-        fi
-        git commit -m "commiting changes if needed"
-        if ! git checkout "$CUSTOM_TRS_JVB_BRANCH"; then
-            echo -e "${RED}Failed to git checkout${NC}"
-            sleep 5
-            exit 1
-        fi
-        if ! git pull; then
-            echo -e "${RED}Failed to git pull${NC}"
-            sleep 5
-            exit 1
-        fi
-    fi
-    if ! mvn package -DskipTests -Dassembly.skipAssembly=false; then
-        echo -e "${RED}Failed to mvn package${NC}"
-        sleep 5
-        exit 1
-    fi
-    if ! unzip -o jvb/target/jitsi-videobridge-2.1-SNAPSHOT-archive.zip; then
-        echo -e "${RED}Failed to unzip ${NC}"
-        sleep 5
-        exit 1
-    fi
-    cd ..
+    # echo -e "${BLUE}Getting latest custom jvb codebase...${NC}"
+    # if [ ! -d "trs-jvb" ]; then
+    #     mkdir trs-jvb
+    # fi
+    # cd trs-jvb
+    # if [ ! -d .git ]; then 
+    #     if ! git clone github-trs-jvb:TheRealStart/jitsi-videobridge.git .; then
+    #         echo -e "${RED}Failed to clone jvb!${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    #     if ! git add .; then
+    #         echo -e "${RED}Failed to git add${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    #     git commit -m "commiting changes if needed"
+    #     if ! git checkout "$CUSTOM_TRS_JVB_BRANCH"; then
+    #         echo -e "${RED}Failed to git checkout${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    # else
+    #     if ! git fetch; then 
+    #         echo -e "${RED}Failed to git fetch${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    #     if ! git add .; then
+    #         echo -e "${RED}Failed to git add${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    #     git commit -m "commiting changes if needed"
+    #     if ! git checkout "$CUSTOM_TRS_JVB_BRANCH"; then
+    #         echo -e "${RED}Failed to git checkout${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    #     if ! git pull; then
+    #         echo -e "${RED}Failed to git pull${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    # fi
+    # if ! mvn package -DskipTests -Dassembly.skipAssembly=false; then
+    #     echo -e "${RED}Failed to mvn package${NC}"
+    #     sleep 5
+    #     exit 1
+    # fi
+    # if ! unzip -o jvb/target/jitsi-videobridge-2.1-SNAPSHOT-archive.zip; then
+    #     echo -e "${RED}Failed to unzip ${NC}"
+    #     sleep 5
+    #     exit 1
+    # fi
+    # cd ..
     
     echo "${BLUE}Building custom jvb...${NC}"
         if ! docker build --tag jitsi/jvb:custom .; then
@@ -212,34 +212,82 @@ if [[ -f $envFile ]]; then
         fi
     cd ..
 
-    # Launching jitsi services
-    docker-compose -f docker-compose-custom.yml up -d --force-recreate
-
-     # Customize interface config
-    echo -e "${BLUE}Customizing interface config...${NC}"
-    if ! sudo sed -i \
-        -e "s#DEFAULT_REMOTE_DISPLAY_NAME:.*#DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',#" \
-        -e "s#APP_NAME:.*#APP_NAME: '$CUSTOM_APP_NAME',#" \
-        -e "s#NATIVE_APP_NAME:.*#NATIVE_APP_NAME: '$CUSTOM_APP_NAME',#" \
-        -e "s#PROVIDER_NAME:.*#PROVIDER_NAME: '$CUSTOM_APP_NAME',#" \
-        -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$CUSTOM_WATERMARK_URL',#" \
-        -e "s#DISABLE_VIDEO_BACKGROUND:.*#DISABLE_VIDEO_BACKGROUND: true,#" \
-        -e "s#DISABLE_DOMINANT_SPEAKER_INDICATOR:.*#DISABLE_DOMINANT_SPEAKER_INDICATOR: true,#" \
-        -e "s#DISABLE_JOIN_LEAVE_NOTIFICATIONS:.*#DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,#" \
-        -e "s#// MOBILE_DOWNLOAD_LINK_ANDROID:.*#MOBILE_DOWNLOAD_LINK_ANDROID: '$MOBILE_DOWNLOAD_LINK_ANDROID',#" \
-        -e "s#// MOBILE_DOWNLOAD_LINK_IOS:.*#MOBILE_DOWNLOAD_LINK_IOS: '$MOBILE_DOWNLOAD_LINK_IOS',#" \
-        -e "s#'info', ##" \
-        -e "s#'sharedvideo', ##" \
-        -e "s#'invite', ##" \
-        -e "s#'videobackgroundblur', ##" \
-        -e "s#'download', ##" \
-        -e "s#'help', ##" \
-        -e "s#'download', ##" \
-        ${CONFIG}/web/interface_config.js; then
-            echo -e "${RED}Failed to customize interface_config.js!${NC}"
+    # Build jicofo:custom
+    cd jicofo
+    # echo -e "${BLUE}Getting latest custom jicofo codebase...${NC}"
+    # if [ ! -d "trs-jicofo" ]; then
+    #     mkdir trs-jicofo
+    # fi
+    # cd trs-jicofo
+    # if [ ! -d .git ]; then 
+    #     if ! git clone github-trs-jicofo:TheRealStart/jitsi-jicofo.git .; then
+    #         echo -e "${RED}Failed to clone jicofo!${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    #     if ! git add .; then
+    #         echo -e "${RED}Failed to git add${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    #     git commit -m "commiting changes if needed"
+    #     if ! git checkout "$CUSTOM_TRS_JICOFO_BRANCH"; then
+    #         echo -e "${RED}Failed to git checkout${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    # else
+    #     if ! git fetch; then 
+    #         echo -e "${RED}Failed to git fetch${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    #     if ! git add .; then
+    #         echo -e "${RED}Failed to git add${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    #     git commit -m "commiting changes if needed"
+    #     if ! git checkout "$CUSTOM_TRS_JICOFO_BRANCH"; then
+    #         echo -e "${RED}Failed to git checkout${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    #     if ! git pull; then
+    #         echo -e "${RED}Failed to git pull${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    # fi
+    # if ! mvn package -DskipTests -Dassembly.skipAssembly=false; then
+    #     echo -e "${RED}Failed to mvn package${NC}"
+    #     sleep 5
+    #     exit 1
+    # fi
+    # if ! unzip -o trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip; then
+    #     echo -e "${RED}Failed to unzip ${NC}"
+    #     sleep 5
+    #     exit 1
+    # fi
+    # cd ..
+    
+    echo "${BLUE}Building custom jicofo...${NC}"
+        if ! docker build --tag jitsi/jicofo:custom .; then
+            echo -e "${RED}Failed to docker build${NC}"
             sleep 5
             exit 1
-    fi
+        fi
+    cd ..
+
+    # Build prosody:custom
+    cd prosody
+    echo "${BLUE}Building custom prosody...${NC}"
+        if ! docker build --tag jitsi/prosody:custom .; then
+            echo -e "${RED}Failed to docker build${NC}"
+            sleep 5
+            exit 1
+        fi
+    cd ..
 else
     echo -e "${RED}.env file not found${NC}"
     sleep 5
