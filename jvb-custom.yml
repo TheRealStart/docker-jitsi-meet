@@ -29,6 +29,7 @@ services:
             - PUBLIC_URL
             - TZ
             - TESTING_OCTO_PROBABILITY
+            - DEPLOYMENTINFO_REGION
         depends_on:
             - prosody
         networks:
