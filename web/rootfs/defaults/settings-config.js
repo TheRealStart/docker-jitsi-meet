@@ -34,6 +34,7 @@
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN -}}
 {{ $CHANNEL_LAST_N := .Env.CHANNEL_LAST_N | default -1 -}}
+{{ $E2E_PING_INTERVAL := .Env.E2E_PING_INTERVAL | default -1 -}}
 
 
 // Video configuration.
