@@ -317,3 +317,6 @@ config.lastNLimits = {
     70: 5,
     90: 2
 }
+
+if (!config.hasOwnProperty("e2eping")) config.e2eping = {};
+config.e2eping.pingInterval = {{ $E2E_PING_INTERVAL }};

@@ -99,6 +99,7 @@ services:
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
             - CHANNEL_LAST_N
+            - E2E_PING_INTERVAL
         networks:
             meet.jitsi:
                 aliases:
