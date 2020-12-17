@@ -11,9 +11,7 @@ mkdir -p \
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
     if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
         if [[ ! -f /config/acme.sh/acme.sh ]]; then
-            mkdir -p /config/acme.sh
-            chmod +x /opt/acme.sh
-            cp /opt/acme.sh /config/acme.sh/acme.sh
+            mkdir /config/acme.sh
             pushd /opt
             sh ./acme.sh --install --home /config/acme.sh --accountemail $LETSENCRYPT_EMAIL
             popd
@@ -25,7 +23,6 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             fi
             export LE_WORKING_DIR="/config/acme.sh"
             # TODO: move away from standalone mode to webroot mode.
-            chmod +x /config/acme.sh/acme.sh
             /config/acme.sh/acme.sh \
                 $STAGING \
                 --issue \
