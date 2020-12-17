@@ -102,7 +102,7 @@ services:
             - CHANNEL_LAST_N
             - E2E_PING_INTERVAL
         networks:
-            meet.jitsi:
+            missed:
                 aliases:
                     - ${XMPP_DOMAIN}
 
@@ -181,7 +181,7 @@ services:
             - ENABLE_WEBSOCKETS
             - TURNCREDENTIALS_SECRET
         networks:
-            meet.jitsi:
+            missed:
                 aliases:
                     - ${XMPP_SERVER}
 
@@ -213,8 +213,8 @@ services:
         depends_on:
             - prosody
         networks:
-            meet.jitsi:
+            missed:
 
 # Custom network so all services can communicate using a FQDN
 networks:
-    meet.jitsi:
+    missed:
