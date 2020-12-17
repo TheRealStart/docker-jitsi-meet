@@ -28,6 +28,8 @@ services:
             - JVB_WS_SERVER_ID
             - PUBLIC_URL
             - TZ
+            - TESTING_OCTO_PROBABILITY
+            - JVB_REGION
         depends_on:
             - prosody
         networks:
