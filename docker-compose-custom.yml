@@ -108,7 +108,7 @@ services:
 
     # XMPP server
     prosody:
-        image: jitsi/prosody:stable-5142-3
+        image: jitsi/prosody:custom
         restart: ${RESTART_POLICY}
         # Exposing to world for other jvb instances
         ports:
@@ -187,7 +187,7 @@ services:
 
     # Focus component
     jicofo:
-        image: jitsi/jicofo:stable-5142-3
+        image: jitsi/jicofo:custom
         restart: ${RESTART_POLICY}
         volumes:
             - ${CONFIG}/jicofo:/config:Z
