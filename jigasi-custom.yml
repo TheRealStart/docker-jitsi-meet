@@ -3,7 +3,7 @@ version: '3'
 services:
     # SIP gateway (audio)
     jigasi:
-        image: jitsi/jigasi:stable-5142
+        image: jitsi/jigasi:stable-5142-3
         restart: ${RESTART_POLICY}
         ports:
             - '${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}:${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}/udp'
@@ -46,3 +46,7 @@ services:
             - prosody
         networks:
             meet.jitsi:
+
+# Custom network so all services can communicate using a FQDN
+networks:
+    meet.jitsi:

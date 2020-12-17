@@ -146,7 +146,7 @@ if [[ -f $envFile ]]; then
     cd ..
 
     # Build jvb:custom
-    cd jvb
+    # cd jvb
     # echo -e "${BLUE}Getting latest custom jvb codebase...${NC}"
     # if [ ! -d "trs-jvb" ]; then
     #     mkdir trs-jvb
@@ -204,16 +204,16 @@ if [[ -f $envFile ]]; then
     # fi
     # cd ..
     
-    echo "${BLUE}Building custom jvb...${NC}"
-        if ! docker build --tag jitsi/jvb:custom .; then
-            echo -e "${RED}Failed to docker build${NC}"
-            sleep 5
-            exit 1
-        fi
-    cd ..
+    # echo "${BLUE}Building custom jvb...${NC}"
+    #     if ! docker build --tag jitsi/jvb:custom .; then
+    #         echo -e "${RED}Failed to docker build${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    # cd ..
 
     # Build jicofo:custom
-    cd jicofo
+    # cd jicofo
     # echo -e "${BLUE}Getting latest custom jicofo codebase...${NC}"
     # if [ ! -d "trs-jicofo" ]; then
     #     mkdir trs-jicofo
@@ -271,23 +271,23 @@ if [[ -f $envFile ]]; then
     # fi
     # cd ..
     
-    echo "${BLUE}Building custom jicofo...${NC}"
-        if ! docker build --tag jitsi/jicofo:custom .; then
-            echo -e "${RED}Failed to docker build${NC}"
-            sleep 5
-            exit 1
-        fi
-    cd ..
+    # echo "${BLUE}Building custom jicofo...${NC}"
+    #     if ! docker build --tag jitsi/jicofo:custom .; then
+    #         echo -e "${RED}Failed to docker build${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    # cd ..
 
     # Build prosody:custom
-    cd prosody
-    echo "${BLUE}Building custom prosody...${NC}"
-        if ! docker build --tag jitsi/prosody:custom .; then
-            echo -e "${RED}Failed to docker build${NC}"
-            sleep 5
-            exit 1
-        fi
-    cd ..
+    # cd prosody
+    # echo "${BLUE}Building custom prosody...${NC}"
+    #     if ! docker build --tag jitsi/prosody:custom .; then
+    #         echo -e "${RED}Failed to docker build${NC}"
+    #         sleep 5
+    #         exit 1
+    #     fi
+    # cd ..
 else
     echo -e "${RED}.env file not found${NC}"
     sleep 5

@@ -102,13 +102,13 @@ services:
             - CHANNEL_LAST_N
             - E2E_PING_INTERVAL
         networks:
-            missed:
+            meet.jitsi:
                 aliases:
                     - ${XMPP_DOMAIN}
 
     # XMPP server
     prosody:
-        image: jitsi/prosody:custom
+        image: jitsi/prosody:stable-5142-3
         restart: ${RESTART_POLICY}
         # Exposing to world for other jvb instances
         ports:
@@ -181,13 +181,13 @@ services:
             - ENABLE_WEBSOCKETS
             - TURNCREDENTIALS_SECRET
         networks:
-            missed:
+            meet.jitsi:
                 aliases:
                     - ${XMPP_SERVER}
 
     # Focus component
     jicofo:
-        image: jitsi/jicofo:custom
+        image: jitsi/jicofo:stable-5142-3
         restart: ${RESTART_POLICY}
         volumes:
             - ${CONFIG}/jicofo:/config:Z
@@ -213,8 +213,8 @@ services:
         depends_on:
             - prosody
         networks:
-            missed:
+            meet.jitsi:
 
 # Custom network so all services can communicate using a FQDN
 networks:
-    missed:
+    meet.jitsi:
