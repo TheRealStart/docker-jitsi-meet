@@ -25,6 +25,7 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             fi
             export LE_WORKING_DIR="/config/acme.sh"
             # TODO: move away from standalone mode to webroot mode.
+            chmod +x /config/acme.sh/acme.sh
             /config/acme.sh/acme.sh \
                 $STAGING \
                 --issue \
