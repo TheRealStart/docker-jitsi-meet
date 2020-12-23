@@ -1,4 +1,6 @@
-FROM jitsi/web:stable-5142-3
+ARG VERSION=stable-5142-3
+
+FROM jitsi/web:${VERSION}
 
 COPY rootfs/defaults/settings-config.js /defaults/settings-config.js
 COPY rootfs/defaults/system-config.js /defaults/system-config.js
