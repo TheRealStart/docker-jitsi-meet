@@ -157,7 +157,7 @@ if [[ -f $envFile ]]; then
 
     # Build jicofo:custom
     cd jicofo
-    echo "${BLUE}Building custom jicofo...${NC}"
+    echo -e "${BLUE}Building custom jicofo...${NC}"
         if ! docker build --tag jitsi/jicofo:custom .; then
             echo -e "${RED}Failed to docker build${NC}"
             sleep 5
@@ -167,7 +167,7 @@ if [[ -f $envFile ]]; then
 
     # Build prosody:custom
     cd prosody
-    echo "${BLUE}Building custom prosody...${NC}"
+    echo -e "${BLUE}Building custom prosody...${NC}"
         if ! docker build --tag jitsi/prosody:custom .; then
             echo -e "${RED}Failed to docker build${NC}"
             sleep 5

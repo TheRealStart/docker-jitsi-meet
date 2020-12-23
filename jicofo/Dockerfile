@@ -1,10 +1,5 @@
-ARG JITSI_REPO=jitsi
-FROM ${JITSI_REPO}/base-java
-
-RUN \
-	apt-dpkg-wrap apt-get update && \
-	apt-dpkg-wrap apt-get install -y jicofo && \
-	apt-cleanup
+ARG VERSION=stable-5142-3
+FROM jitsi/jicofo:${VERSION}
 
 COPY rootfs/ /
 
