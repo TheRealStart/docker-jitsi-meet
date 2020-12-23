@@ -1,6 +1,7 @@
 {{ $DEPLOYMENTINFO_USERREGION := .Env.DEPLOYMENTINFO_USERREGION | default "" -}}
 {{ $DEPLOYMENTINFO_REGION := .Env.DEPLOYMENTINFO_REGION | default "" -}}
 {{ $DEPLOYMENTINFO_SHARD := .Env.DEPLOYMENTINFO_SHARD | default "" -}}
+{{ $DISABLE_RECORD_AUDIO_NOTIFICATION := .Env.DISABLE_RECORD_AUDIO_NOTIFICATION | default "true" | toBool -}}
 {{ $BRIDGE_CHANNEL := .Env.BRIDGE_CHANNEL | default "websocket" -}}
 {{ $ENABLE_AUDIO_PROCESSING := .Env.ENABLE_AUDIO_PROCESSING | default "true" | toBool -}}
 {{ $ENABLE_CALENDAR := .Env.ENABLE_CALENDAR | default "false" | toBool -}}
@@ -307,6 +308,10 @@ config.deploymentInfo.region = '{{ $DEPLOYMENTINFO_REGION }}';
 
 {{ if $DEPLOYMENTINFO_SHARD -}}
 config.deploymentInfo.shard = '{{ $DEPLOYMENTINFO_SHARD }}';
+{{ end -}}
+
+{{ if $DISABLE_RECORD_AUDIO_NOTIFICATION -}}
+config.disableRecordAudioNotification = true
 {{ end -}}
 
 // Testing
