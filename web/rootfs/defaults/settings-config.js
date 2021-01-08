@@ -24,6 +24,7 @@
 {{ $ENABLE_TALK_WHILE_MUTED := .Env.ENABLE_TALK_WHILE_MUTED | default "false" | toBool -}}
 {{ $ENABLE_TCC := .Env.ENABLE_TCC | default "true" | toBool -}}
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "false" | toBool -}}
+{{ $ENABLE_TRANSLATION := .Env.ENABLE_TRANSLATION | default "false" | toBool -}}
 {{ $RESOLUTION := .Env.RESOLUTION | default "720" -}}
 {{ $RESOLUTION_MIN := .Env.RESOLUTION_MIN | default "180" -}}
 {{ $RESOLUTION_WIDTH := .Env.RESOLUTION_WIDTH | default "1280" -}}
@@ -273,6 +274,8 @@ config.useIPv6 = {{ $ENABLE_IPV6 }};
 
 // Transcriptions (subtitles and buttons can be configured in interface_config)
 config.transcribingEnabled = {{ $ENABLE_TRANSCRIPTIONS }};
+
+config.enableTranslation = {{ $ENABLE_TRANSLATION }};
 
 {{ if .Env.DYNAMIC_BRANDING_URL -}}
 // External API url used to receive branding specific information.
