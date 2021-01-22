@@ -147,6 +147,82 @@ if [[ -f $envFile ]]; then
 
     # Build jvb:custom
     cd jvb
+
+    # Build jitsi/jicofo:custom
+    echo -e "${BLUE}Building custom jitsi/jicofo...${NC}"
+    cd web
+    echo -e "${BLUE}Getting latest custom jicofo...${NC}"
+    if [ ! -d "trs-jicofo" ]; then
+        if ! mkdir -p trs-jicofo; then
+            echo -e "${RED}Failed to mkdir!${NC}"
+            sleep 5
+            exit 1
+        fi
+    fi
+    cd trs-jicofo
+
+    # Pull/clone the latest changes from git repo
+    if [ ! -d .git ]; then
+        rm -rf *
+        if ! git clone github-trs-jitsi-meet:TheRealStart/jicofo.git .; then
+            echo -e "${RED}Failed to git clone!${NC}"
+            sleep 5
+            exit 1
+        fi
+        if ! git checkout "$TRS_JICOFO_BRANCH"; then
+            echo -e "${RED}Failed to git checkout!${NC}"
+            sleep 5
+            exit 1
+        fi
+    else
+        if ! git fetch; then 
+            echo -e "${RED}Failed to git fetch${NC}"
+            sleep 5
+            exit 1
+        fi
+        if ! git add .; then
+            echo -e "${RED}Failed to git add${NC}"
+            sleep 5
+            exit 1
+        fi
+        git commit -m "commiting changes if needed"
+        if ! git checkout "$TRS_JICOFO_BRANCH"; then
+            echo -e "${RED}Failed to git checkout${NC}"
+            sleep 5
+            exit 1
+        fi
+        if ! git pull; then
+            echo -e "${RED}Failed to git pull${NC}"
+            sleep 5
+            exit 1
+        fi
+    fi
+
+    echo -e "${BLUE}Compiling jicofo with mvn...${NC}"
+    if ! mvn package -DskipTests -Dassembly.skipAssembly=false; then
+        echo -e "${RED}Failed to compile with mvn${NC}"
+        sleep 5
+        exit 1
+    fi
+
+    cd ..
+
+    echo -e "${BLUE}Unziping jicofo snapshot...${NC}"
+    if ! unzip -o trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip; then
+        echo -e "${RED}Failed to unzip!${NC}"
+        sleep 5
+        exit 1
+    fi
+
+    echo -e "${BLUE}Building custom jicofo docker image${NC}"
+    if ! docker build --tag jitsi/jicofo:custom .; then
+        echo -e "${RED}Failed to docker build jicofo!${NC}"
+        sleep 5
+        exit 1
+    fi
+
+    cd ..
+
     echo "${BLUE}Building custom jvb...${NC}"
         if ! docker build --tag jitsi/jvb:custom .; then
             echo -e "${RED}Failed to docker build${NC}"
