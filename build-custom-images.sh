@@ -147,7 +147,7 @@ if [[ -f $envFile ]]; then
 
     # Build jitsi/jicofo:custom
     echo -e "${BLUE}Building custom jitsi/jicofo...${NC}"
-    cd web
+    cd jicofo
     echo -e "${BLUE}Getting latest custom jicofo...${NC}"
     if [ ! -d "trs-jicofo" ]; then
         if ! mkdir -p trs-jicofo; then
@@ -224,16 +224,6 @@ if [[ -f $envFile ]]; then
 
     echo -e "${BLUE}Building custom jvb...${NC}"
         if ! docker build --tag jitsi/jvb:custom .; then
-            echo -e "${RED}Failed to docker build${NC}"
-            sleep 5
-            exit 1
-        fi
-    cd ..
-
-    # Build jicofo:custom
-    cd jicofo
-    echo -e "${BLUE}Building custom jicofo...${NC}"
-        if ! docker build --tag jitsi/jicofo:custom .; then
             echo -e "${RED}Failed to docker build${NC}"
             sleep 5
             exit 1
