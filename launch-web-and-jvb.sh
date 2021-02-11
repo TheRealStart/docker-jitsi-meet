@@ -31,7 +31,6 @@ if [[ -f $envFile ]]; then
         -e "s#// MOBILE_DOWNLOAD_LINK_IOS:.*#MOBILE_DOWNLOAD_LINK_IOS: '$MOBILE_DOWNLOAD_LINK_IOS',#" \
         -e "s#'info', ##" \
         -e "s#'sharedvideo', ##" \
-        -e "s#'videobackgroundblur', ##" \
         -e "s#'download', ##" \
         -e "s#'help', ##" \
         ${CONFIG}/web/interface_config.js; then
