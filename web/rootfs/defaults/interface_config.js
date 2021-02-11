@@ -84,7 +84,7 @@ var interfaceConfig = {
      * Whether or not the blurred video background for large video should be
      * displayed on browsers that can support it.
      */
-    DISABLE_VIDEO_BACKGROUND: true,
+    DISABLE_VIDEO_BACKGROUND: false,
 
     DISPLAY_WELCOME_PAGE_CONTENT: true,
     DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
@@ -195,7 +195,7 @@ var interfaceConfig = {
         'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
         'livestreaming', 'etherpad', 'settings', 'raisehand',
         'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-        'tileview', 'mute-everyone', 'security', 'unmute-everyone'
+        'tileview', 'mute-everyone', 'security', 'unmute-everyone', 'videobackgroundblur'
     ],
 
     TOOLBAR_TIMEOUT: 4000,
