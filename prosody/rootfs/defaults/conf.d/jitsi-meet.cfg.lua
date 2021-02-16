@@ -23,8 +23,6 @@ turncredentials_secret = "{{ .Env.TURNCREDENTIALS_SECRET }}";
 turncredentials_port = {{ .Env.TURNCREDENTIALS_PORT }};
 turncredentials_ttl = {{ .Env.TURNCREDENTIALS_TTL }};
 turncredentials = {
-    { type = "stun", host = "{{ .Env.PROSODY_COTURN_HOST }}" },
-    { type = "turn", host = "{{ .Env.PROSODY_COTURN_HOST }}", port = {{ .Env.TURNCREDENTIALS_PORT }} },
     { type = "turns", host = "{{ .Env.PROSODY_COTURN_HOST }}", port = {{ .Env.TURNCREDENTIALS_PORT }}, transport = "tcp" }
 }
 {{ end }}
