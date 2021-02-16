@@ -29,6 +29,13 @@ if [[ -f $envFile ]]; then
         exit 1
     fi
 
+    echo -e "${BLUE}Copying mod_turncredentials.lua plugin into corresponding config folder...${NC}"
+    if ! sudo cp -r ./custom/prosody-plugins-custom/mod_turncredentials.lua ${CONFIG}/prosody/prosody-plugins-custom/; then
+        echo -e "${RED}Failed to copy the plugin!${NC}"
+        sleep 5
+        exit 1
+    fi
+
     # Build jitsi/web:custom
     echo -e "${BLUE}Building custom jitsi/web...${NC}"
     cd web
