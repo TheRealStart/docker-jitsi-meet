@@ -29,6 +29,7 @@ if [[ -f $envFile ]]; then
         -e "s#DISABLE_JOIN_LEAVE_NOTIFICATIONS:.*#DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,#" \
         -e "s#MOBILE_DOWNLOAD_LINK_ANDROID:.*#MOBILE_DOWNLOAD_LINK_ANDROID: '$MOBILE_DOWNLOAD_LINK_ANDROID',#" \
         -e "s#MOBILE_DOWNLOAD_LINK_IOS:.*#MOBILE_DOWNLOAD_LINK_IOS: '$MOBILE_DOWNLOAD_LINK_IOS',#" \
+        -e "s#DISABLE_JOIN_LEAVE_NOTIFICATIONS:.*#DISABLE_JOIN_LEAVE_NOTIFICATIONS: false,#" \
         -e "s#'info', ##" \
         -e "s#'sharedvideo', ##" \
         -e "s#'download', ##" \
